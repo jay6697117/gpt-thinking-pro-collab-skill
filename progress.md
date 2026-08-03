@@ -77,3 +77,44 @@
 ### 下一步
 
 - 无必需工作；等待用户审阅、提交或安装更新。
+
+## 2026-08-03：README 名称迁移与中文化
+
+### 已执行
+
+- 阅读本轮提供的仓库级交互与编码约束。
+- 阅读 `planning-with-files` 完整说明；确认已有规划文件并恢复上一任务上下文。
+- 检查 Git 状态；本轮开始时工作区干净。
+- 确认本轮进入 Code 模式，范围限定为 `README.md`。
+- 新增 Phase 6，记录新 Skill 名称、中文化边界和验收标准。
+- 完整读取 README，定位旧 Skill 名称、旧仓库地址和英文使用示例。
+- 核对 `SKILL.md` frontmatter，确认规范名称已是 `gpt-thinking-pro-collab`。
+- 核对 Git `origin`，确认当前仓库为 `jay6697117/gpt-thinking-pro-collab-skill`。
+- 确定中文化方式：代码块只保留 English 调用语法，把示例任务与验收说明移到代码块外并改写为简体中文。
+- 完成 README 修改：统一标题、触发名、安装与更新命令、仓库目录、skills.sh 链接和安全审计链接。
+- 将“使用”章节的四组英文任务示例改为中文 blockquote，保留 `model`、`mode`、模型名等原始标识符。
+- 审阅 README 完整 diff；修改仅涉及名称、地址和用法中文化，没有改变模型配置、权限或安全语义。
+- 搜索 `gpt-pro-collab` 与 `genoooool`；README 无旧名称或旧所有者残留。
+- 扫描 fenced code block 之外的纯英文说明；无匹配。
+- 执行 `git diff --check -- README.md`；通过。
+- 执行 9 项合同测试；README 配置用例和 Markdown 围栏语言用例通过，唯一失败为未修改合同测试仍断言 `SKILL.md` 的旧名称。
+- 验证外部地址：GitHub CLI 确认新仓库存在且为私有；新 skills.sh 页面尚未收录，Snyk 深链不可用。
+- 移除 README 顶部失效 badge、旧名称下的 Snyk 等级继承和失效审计深链；保留通用浏览器协作安全说明。
+- 完成最终 README diff 审阅；没有修改模型配置、协作流程、权限边界或安全防护行为。
+- 重新执行两项 README 合同测试：中文化后的 fenced code block 语言约束与 Thinking 配置文档均通过。
+- 重新执行完整 `git diff --check`；通过。
+- 规划完整性脚本输出 `ALL PHASES COMPLETE (6/6)`。
+- 删除合同测试生成的可再生 `tests/__pycache__`，避免留下验证缓存。
+- 最终 Git 状态仅包含 README 与用户要求维护的三份规划文件；未提交、未推送。
+
+### 错误
+
+- 完整合同测试有 1 项失败：`test_frontmatter_contains_only_supported_keys` 仍断言 `name: gpt-pro-collab`，但任务开始前已存在的 `SKILL.md` 当前声明 `name: gpt-thinking-pro-collab`。该失败不由 README 修改引入，且修正测试或其他交付文件超出本轮明确范围。
+
+### 当前阶段
+
+- Phase 6 已完成。
+
+### 下一步
+
+- 无必需工作；等待用户审阅或继续同步其他交付文件。

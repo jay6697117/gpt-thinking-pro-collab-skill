@@ -1,10 +1,8 @@
-# GPT Model Collab Skill
-
-[![skills.sh](https://skills.sh/b/genoooool/gpt-pro-collab-skill)](https://skills.sh/genoooool/gpt-pro-collab-skill/gpt-pro-collab)
+# gpt-thinking-pro-collab：GPT Thinking / Pro 协作技能
 
 一个面向 Codex Desktop 的个人 Skill：让 Codex 负责本地仓库、代码集成和独立验收，并在需要时通过内置浏览器向配置选定的 ChatGPT 模型求助，或者把完整编码任务委托给该目标模型。
 
-这个 Skill 默认不会自动触发。只有显式调用 `$gpt-pro-collab` 时才会启用。
+这个 Skill 默认不会自动触发。只有显式调用 `$gpt-thinking-pro-collab` 时才会启用。
 
 ## 解决什么问题
 
@@ -112,31 +110,31 @@ Skill 不会代替用户配置代理或 VPN，也不会尝试绕过地区、账�
 先确认仓库中的 Skill 可以被识别：
 
 ```bash
-npx skills add genoooool/gpt-pro-collab-skill --list
+npx skills add jay6697117/gpt-thinking-pro-collab-skill --list
 ```
 
 全局安装到 Codex：
 
 ```bash
-npx skills add genoooool/gpt-pro-collab-skill \
-  --skill gpt-pro-collab \
+npx skills add jay6697117/gpt-thinking-pro-collab-skill \
+  --skill gpt-thinking-pro-collab \
   -g \
   -a codex \
   -y
 ```
 
-安装后可在新任务中通过 `$gpt-pro-collab` 显式触发。
+安装后可在新任务中通过 `$gpt-thinking-pro-collab` 显式触发。
 
 Skill 被 skills.sh 收录后，可以在以下页面查看：
 
-<https://skills.sh/genoooool/gpt-pro-collab-skill/gpt-pro-collab>
+<https://skills.sh/jay6697117/gpt-thinking-pro-collab-skill/gpt-thinking-pro-collab>
 
 ### 使用 GitHub CLI
 
 也可以直接克隆到个人 Skill 目录：
 
 ```bash
-gh repo clone genoooool/gpt-pro-collab-skill ~/.codex/skills/gpt-pro-collab
+gh repo clone jay6697117/gpt-thinking-pro-collab-skill ~/.codex/skills/gpt-thinking-pro-collab
 ```
 
 如果目标目录已经存在，不要直接覆盖。先比较现有 `SKILL.md` 和仓库版本，再决定是否更新。
@@ -148,7 +146,7 @@ gh repo clone genoooool/gpt-pro-collab-skill ~/.codex/skills/gpt-pro-collab
 下载仓库后，确保目录结构如下：
 
 ```text
-~/.codex/skills/gpt-pro-collab/
+~/.codex/skills/gpt-thinking-pro-collab/
 ├── SKILL.md
 └── agents/
     └── openai.yaml
@@ -160,42 +158,37 @@ gh repo clone genoooool/gpt-pro-collab-skill ~/.codex/skills/gpt-pro-collab
 
 ### 默认按需咨询
 
-```text
-$gpt-pro-collab
-
-task: Fix duplicate requests when users switch list filters quickly.
-```
+> `$gpt-thinking-pro-collab`
+>
+> 任务：修复用户快速切换列表筛选条件时产生的重复请求。
 
 验收标准可以省略，Codex 会结合仓库规则、现有测试和变更风险自动补全。
 
 ### 使用 GPT-5.6 Thinking
 
-```text
-$gpt-pro-collab
-
-model: GPT-5.6 Thinking
-task: Analyze the repository architecture and propose a maintainable fix.
-```
+> `$gpt-thinking-pro-collab`
+>
+> `model: GPT-5.6 Thinking`
+>
+> 任务：分析仓库架构，并提出易于维护的修复方案。
 
 ### 目标模型主写、Codex 集成
 
-```text
-$gpt-pro-collab
-
-model: GPT-5.6 Thinking
-mode: delegate
-task: Refactor the payment callback module.
-acceptance: Preserve the existing API and pass lint, type checks, unit tests, and the production build.
-```
+> `$gpt-thinking-pro-collab`
+>
+> `model: GPT-5.6 Thinking`
+>
+> `mode: delegate`
+>
+> 任务：重构支付回调模块。
+>
+> 验收标准：保持现有 API 不变，并通过代码检查、类型检查、单元测试和生产构建。
 
 也可以用自然语言指定模式：
 
-```text
-$gpt-pro-collab
-
-Use GPT-5.6 Pro in delegate mode. Let the target model write the code, then have Codex integrate and validate it locally.
-Task: Add an audit-log query page to the admin application.
-```
+> 使用 `$gpt-thinking-pro-collab`，选择 `GPT-5.6 Pro` 和 `delegate` 模式。让目标模型主写代码，再由 Codex 在本地集成并验证。
+>
+> 任务：为管理后台添加审计日志查询页面。
 
 ## Codex 会执行的流程
 
@@ -273,13 +266,13 @@ Task: Add an audit-log query page to the admin application.
 如果通过 Skills CLI 安装：
 
 ```bash
-npx skills update gpt-pro-collab -g -y
+npx skills update gpt-thinking-pro-collab -g -y
 ```
 
 如果通过 Git 克隆安装：
 
 ```bash
-git -C ~/.codex/skills/gpt-pro-collab pull --ff-only
+git -C ~/.codex/skills/gpt-thinking-pro-collab pull --ff-only
 ```
 
 更新完成后，新开一个 Codex 任务。
@@ -336,9 +329,9 @@ rg -n 'TODO|\[TODO' .
 - 私有仓库、内部服务和本地测试环境不会自动对目标模型可见。
 - 真实验证仍依赖本地项目可运行的测试、构建和外部环境。
 
-## skills.sh 安全审计
+## 浏览器协作安全
 
-skills.sh 的 Snyk 自动审计将该 Skill 标记为 `W011 / MEDIUM`：工作流需要读取内置浏览器中的第三方内容，因此存在间接提示注入风险。
+这个 Skill 需要读取内置浏览器中的第三方内容，因此存在间接提示注入风险。
 
 这是浏览器协作类 Skill 的固有风险。当前防护包括：
 
@@ -347,8 +340,6 @@ skills.sh 的 Snyk 自动审计将该 Skill 标记为 `W011 / MEDIUM`：工作�
 - 不检查 Cookie、本地存储、密码或会话文件；
 - 目标模型的建议不能扩大 Codex 权限；
 - 所有代码必须经过本地审查和真实验证。
-
-审计详情：<https://skills.sh/genoooool/gpt-pro-collab-skill/gpt-pro-collab/security/snyk>
 
 ## 常见问题
 

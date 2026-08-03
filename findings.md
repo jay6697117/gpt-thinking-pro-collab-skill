@@ -97,3 +97,21 @@
 - 模型身份仍来自自然语言自报，不是平台侧加密证明；README 已明确该限制。
 - ChatGPT UI 档位名称可能继续变化；README 链接官方说明，Skill 在目标档位不存在时会安全失败。
 - 未执行真实 ChatGPT 对话，因为本次目标是改造和验证 Skill，本地前向验证在浏览器动作前停止，未使用用户账号或额度。
+
+## README 名称迁移与中文化任务
+
+- 用户明确指定新的 Skill 名称为 `gpt-thinking-pro-collab`。
+- 用户明确要求修改范围为 `README.md`，重点修正仍为英文的用法说明。
+- 当前工作区在任务开始时无未提交修改；已有三份规划文件来自上一项已完成任务。
+- 本次审校将区分用户可见说明与字面语法：说明正文翻译为简体中文，命令、代码块、路径、配置键和其他标识符保持 English。
+- `SKILL.md` frontmatter 已声明 `name: gpt-thinking-pro-collab`，可作为 README 的 Skill 名称依据。
+- Git `origin` 已指向 `https://github.com/jay6697117/gpt-thinking-pro-collab-skill.git`，README 中原有的 `genoooool/gpt-pro-collab-skill` 已不是当前仓库地址。
+- README 的旧名称覆盖 badge、显式触发、Skills CLI、skills.sh 页面、GitHub 克隆目录、手动目录结构、四组使用示例、更新命令和安全审计链接，必须作为一组原子迁移。
+- README 主体说明已大部分中文化；明显的英文用户用法集中在四组示例的任务与验收文本。为同时保持代码块 English，将把中文任务描述移到代码块外，代码块仅保留 Skill 调用与配置语法。
+- `SKILL.md` 描述、`agents/openai.yaml` 和现有合同测试仍引用旧触发名，但它们不属于用户本轮明确要求修改的 `README.md` 范围；本轮只记录该事实，不扩大修改范围。
+- 修改后 README 已无 `gpt-pro-collab` 或 `genoooool` 残留；标题、链接、命令、目录和用法位置已统一使用新名称。
+- README fenced code block 的 English-only 合同测试通过；围栏外纯英文说明扫描无结果，四组用户任务与验收示例均已改为简体中文。
+- 完整合同测试共 9 项，8 项通过；唯一失败是未修改的 `tests/test_skill_contract.py` 仍要求 `SKILL.md` 包含旧名称，而 `SKILL.md` 当前已是新名称。README 文档合同与 Markdown 语言合同均通过。
+- GitHub CLI 确认 `jay6697117/gpt-thinking-pro-collab-skill` 真实存在且当前为私有仓库，解释了匿名 GitHub 页面返回 `404` 的原因。
+- 新名称对应的 skills.sh 技能页尚未收录：HTTP 表面返回 `200`，但页面正文明确显示 `404`；Snyk 深链直接返回 HTTP `404`。
+- README 不应把旧名称下的 Snyk 审计等级自动继承给新名称。顶部 badge、具体等级和失效深链已移除；安装章节保留了明确带“收录后”前提的未来技能页地址。

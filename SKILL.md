@@ -1,5 +1,5 @@
 ---
-name: gpt-pro-collab
+name: gpt-thinking-pro-collab
 description: "让 Codex 与已登录的 ChatGPT 目标模型协作完成本地工程任务，并通过 model 配置选择 GPT-5.6 Pro 或 GPT-5.6 Thinking。仅当用户显式调用 $gpt-pro-collab，或明确要求 Codex 通过内置浏览器向 GPT 模型求助、让目标模型主写代码再由 Codex 本地集成时使用。支持 consult（遇到关键问题再咨询，默认）和 delegate（目标模型主写、Codex 集成验收）两种模式；Codex 始终负责仓库检查、权限控制、代码落地和独立验证。"
 ---
 

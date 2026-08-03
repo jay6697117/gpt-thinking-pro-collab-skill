@@ -50,6 +50,12 @@
 
 交付物：仅修改 `README.md`，将用户可见的 Skill 名称统一为 `gpt-thinking-pro-collab`，并把仍为英文的使用说明改为简体中文。
 
+### Phase 7：参考上游仓库优化 README
+
+**Status:** complete
+
+交付物：对比参考仓库与本地当前实现，重构 `README.md` 的信息架构、安装与使用说明、行为边界和验证指引，同时保留本项目的新名称与可配置模型语义。
+
 ## 当前决策
 
 - 使用调用级 `model` 配置项；未提供时默认 `GPT-5.6 Pro`，保持向后兼容。
@@ -59,6 +65,8 @@
 - （Phase 1-5 的旧决策，已被 Phase 6 覆盖）当时保留 `$gpt-pro-collab` 技能标识，以避免破坏安装与显式调用兼容。
 - 用户已明确将 Skill 名称迁移为 `gpt-thinking-pro-collab`；本阶段以该最新要求为准，README 中不得继续展示旧调用名称。
 - 本阶段范围限定为 `README.md`；代码块、命令、路径和标识符保持 English，面向用户的说明正文使用简体中文。
+- Phase 7 只把 `genoooool/gpt-pro-collab-skill` 作为内容组织与表达方式的参考，不回退本项目的名称、仓库地址、双模型配置或 fail-fast 门禁语义。
+- 优化优先解决读者决策路径：先解释价值与快速开始，再展开模型、工作流、安全和维护细节；不机械复制参考 README。
 
 ## 完成标准
 
@@ -71,6 +79,10 @@
 - [x] README 中的 Skill 标题、安装名称、调用示例和说明统一为 `gpt-thinking-pro-collab`。
 - [x] README 的用户用法说明已中文化，且代码块内容保持 English。
 - [x] README 差异、旧名称残留、英文说明残留和 Markdown 基础格式验证通过。
+- [x] 已读取参考仓库当前 README，并形成可追踪的差异与取舍。
+- [x] 本地 README 的结构、快速开始、配置说明、使用示例和边界说明经过整体优化。
+- [x] 新名称、当前仓库地址、双模型语义和中文说明没有回退。
+- [x] README 合同测试、旧名称残留、围栏语言、链接与差异检查通过。
 
 ## 错误记录
 
@@ -80,5 +92,5 @@
 | 官方 `quick_validate.py` 缺少运行时依赖，报 `ModuleNotFoundError: No module named 'yaml'` | 1 | 使用 `uv run --no-project --with pyyaml` 创建临时依赖环境后校验通过 |
 | Ruff 检查报告 import block 和两处格式不符合规范 | 3 | 表达式与顺序已修正后仍有一行多余空白；第三次定位后使用 Ruff `--fix` 删除该空行，随后 lint 与 format 检查均通过 |
 | `check-complete.sh` 无法识别表格形式的阶段，输出 `0/0 phases complete` | 1 | 按脚本要求改为可识别的阶段标题与完成状态字段后重跑 |
-| 合同测试的 frontmatter 用例仍断言旧名称 `gpt-pro-collab`，与未修改的 `SKILL.md` 当前名称不一致 | 1 | 确认为 README 之外的既有测试契约过期；本轮不扩大文件范围，README 相关用例和代码块语言用例均通过 |
+| 合同测试的 frontmatter 用例仍断言旧名称 `gpt-pro-collab`，与未修改的 `SKILL.md` 当前名称不一致 | 2 | Phase 6 与 Phase 7 均确认为 README 之外的既有测试契约过期；不扩大文件范围，README 相关用例和代码块语言用例均通过 |
 | 新名称对应的 skills.sh 技能页是软 `404`，Snyk 深链返回 HTTP `404` | 1 | 确认当前 GitHub 仓库为私有且尚未重新收录；移除失效 badge、旧审计等级和深链，仅保留“收录后可查看”的条件式未来地址 |

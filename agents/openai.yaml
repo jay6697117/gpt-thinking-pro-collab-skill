@@ -1,0 +1,6 @@
+interface:
+  display_name: "GPT 可配置模型协作"
+  short_description: "按配置选择 GPT-5.6 Pro 或 Thinking，并由 Codex 独立验收"
+  default_prompt: "使用 $gpt-pro-collab 以 model: GPT-5.6 Pro 协作完成当前任务，并由 Codex 本地集成验收。"
+policy:
+  allow_implicit_invocation: false

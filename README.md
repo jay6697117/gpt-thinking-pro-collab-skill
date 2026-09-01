@@ -205,43 +205,42 @@ gh repo clone jay6697117/gpt-thinking-pro-collab-skill ~/.codex/skills/gpt-think
 
 ### 默认按需咨询
 
-> `$gpt-thinking-pro-collab`
->
-> 任务：修复用户快速切换列表筛选条件时产生的重复请求。
+```text
+$gpt-thinking-pro-collab
+
+Request: Fix duplicate requests when users rapidly switch list filters.
+```
 
 验收标准可以省略，Codex 会结合仓库规则、现有测试和变更风险自动补全。
 
 ### 使用 GPT-5.6 Thinking
 
-> `$gpt-thinking-pro-collab`
->
-> `model: GPT-5.6 Thinking`
->
-> 任务：分析仓库架构，并提出易于维护的修复方案。
+```text
+$gpt-thinking-pro-collab
 
-### `delegate`：目标模型主写、Codex 本地验收
+model: GPT-5.6 Thinking
+Request: Analyze the repository architecture and propose a maintainable repair plan.
+```
 
-下面的调用同时明确目标模型、协作模式、任务边界和可验证结果：
+### 目标模型主写、Codex 集成
 
-> `$gpt-thinking-pro-collab`
->
-> `model: GPT-5.6 Thinking`
->
-> `mode: delegate`
->
-> **任务**
->
-> 重构支付回调模块，将签名校验、幂等处理和业务编排拆分为清晰边界。
->
-> **验收标准**
->
-> - 保持现有 API 和回调协议兼容；
-> - 重复回调不会触发重复业务处理；
-> - 非法签名继续被拒绝，并保持既有错误语义；
-> - 通过代码检查、类型检查、单元测试和生产构建；
-> - 最终改动由 Codex 在本地集成并独立验证。
+```text
+$gpt-thinking-pro-collab
 
-也可以用自然语言表达同一配置，例如：使用 `$gpt-thinking-pro-collab`，选择 `GPT-5.6 Pro` 和 `delegate` 模式，让目标模型主写代码，再由 Codex 在本地集成并验证。
+model: GPT-5.6 Thinking
+mode: delegate
+Request: Refactor the payment callback module.
+Acceptance: Preserve the existing API and callback protocol, prevent duplicate processing, keep rejecting invalid signatures with existing error semantics, and pass lint, type checks, unit tests, and the production build.
+```
+
+也可以用自然语言指定模型和协作模式：
+
+```text
+$gpt-thinking-pro-collab
+
+Use GPT-5.6 Pro in delegate mode. Let the target model write the code, then have Codex integrate it locally and verify it independently.
+Request: Add an audit-log query page to the admin system.
+```
 
 ## Codex 会执行的流程
 

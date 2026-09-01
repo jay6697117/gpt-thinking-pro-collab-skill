@@ -162,3 +162,30 @@
   - 新 skills.sh 地址仍显示未收录的软 `404`，README 已明确以“收录后”为前提，没有把它描述为当前可用页面。
 - 最终 README 通过 GitHub GFM 渲染接口，导航目标、围栏结构和 Markdown 语法可正常解析。
 - 最终优化保留参考文档的角色分工、安全和验收优势，同时把安装与首次调用提前，并明确呈现本项目的双模型扩展与严格 fail-fast 差异。
+
+## README 使用章节版式调整任务
+
+- 当前权威工作目录为 `/Users/zhangjinhui/Desktop/gpt-thinking-pro-collab-skill`，分支为 `main`，任务开始时工作区干净。
+- 用户明确要求修改 `README.md` 的“使用”章节，并以参考仓库当前用法和本地附件截图为版式依据。
+- 当前本地“使用”章节采用多个三级标题加 blockquote 示例，包含默认 `consult`、显式 Thinking 和 `delegate` 三种调用方式。
+- 本阶段必须保留本仓库的 `$gpt-thinking-pro-collab` 调用名、`GPT-5.6 Pro` / `GPT-5.6 Thinking` 双模型语义，以及 `consult` / `delegate` 配置含义。
+- 截图显示参考版式使用 fenced code block，而不是 blockquote；每个调用示例都可整体复制。
+- 截图中的层级依次为“默认按需咨询”、“Pro 主写、Codex 集成”和“也可以用自然语言指定模式”，结构化示例使用“模式 / 需求 / 验收”字段。
+- 截图中的自然语言示例也放在独立代码块中；因此本地现有行内自然语言句子需要改为完整可复制示例。
+- 搜索引擎没有命中目标仓库，后续将使用目标仓库的 raw README 读取当前权威文本。
+- 参考仓库当前 raw README 与截图一致：默认示例、`delegate` 结构化示例和自然语言示例均使用 `text` fenced code block。
+- 参考版结构化示例的字段顺序是 Skill 调用、模式、需求、验收；自然语言示例则是 Skill 调用、模式描述、需求。
+- 本地 `SKILL.md` 明确支持 `model: <value>`，并允许用自然语言指定目标模型；`delegate` 也支持自然语言触发。
+- `tests/test_skill_contract.py` 明确要求 README 与 SKILL 的所有 fenced code block 不包含 Han 字符。因此将复用参考版式，但把代码块内字段与示例正文写成 English，中文说明继续放在围栏外。
+- 本地 Thinking 文档合同要求 README 保留字面量 `model: GPT-5.6 Thinking`，新用法示例必须继续覆盖该配置。
+- 选定实现把参考仓库的代码块版式应用到四个本地示例：默认调用、Thinking 配置、结构化 `delegate` 和自然语言配置。
+- 为适配双模型，参考标题“Pro 主写、Codex 集成”泛化为“目标模型主写、Codex 集成”；这只改变展示标题，不改变 `delegate` 语义。
+- README 局部 diff 确认“使用”章节现在由四个可复制 `text` 代码块组成，章节边界和后续“Codex 会执行的流程”未受影响。
+- 局部审阅未发现旧 Skill 调用名、缺失的模型配置或围栏未闭合问题。
+- README 两项定向合同均通过：Thinking 配置文档仍完整，所有 Markdown fenced code block 仍为 English-only。
+- `git diff --check` 通过，没有尾随空白或补丁格式错误。
+- 完整合同测试 9 项中 8 项通过；唯一失败仍是既有的 frontmatter 测试要求 `SKILL.md` 包含旧名称 `gpt-pro-collab`，与本轮 README 修改无关。
+- GitHub GFM 渲染接口成功把四组示例解析为独立 `<pre lang="text">` 块，三级标题顺序和后续章节边界正确；这会呈现与参考截图一致的可复制代码块样式。
+- 验证扫描未发现新生成的 Python cache；仓库已有 `.DS_Store`，任务前后 Git 状态均未把它列为变更，因此不删除用户既有文件。
+- 最终结构断言通过：使用章节包含 4 个 `text` 代码块、4 次新 Skill 调用、2 个 Thinking 模型配置、1 个 `delegate` 配置，并且不再包含 blockquote 示例。
+- 最终 Git 审计只列出 README 和三份强制规划记录；没有修改 `SKILL.md`、测试、元数据或其他业务文件。

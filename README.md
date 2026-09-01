@@ -121,11 +121,11 @@ Codex 先理解项目并整理可验收的工程任务，再让目标模型提�
 
 ```mermaid
 flowchart TD
-    CONFIG["解析 model 配置"] --> PROFILE{"目标配置"}
-    PROFILE -->|"GPT-5.6 Pro / GPT-5.6 Sol Pro"| PRO["选择 Pro 档位"]
+    CONFIG["解析模型配置"] --> PROFILE{"目标模型配置"}
+    PROFILE -->|"专业模型配置"| PRO["选择专业档位"]
     PRO --> CHAT["打开空白对话"]
     CHAT --> ASK["只发送模型身份检查"]
-    ASK -->|"匹配 Pro 配置族"| PASS["门禁通过：发送任务上下文"]
+    ASK -->|"模型身份匹配"| PASS["门禁通过：发送任务上下文"]
     ASK -->|"不匹配或含糊"| FAIL["停止目标模型调用"]
     PASS --> WATCH["监控模式与回退状态"]
     WATCH -->|"模型变化或发生回退"| FAIL

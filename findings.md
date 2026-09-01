@@ -223,3 +223,19 @@
 - 只读核对确认当前 `HEAD` 与 `origin/main` 都指向 `7fa01a9`，即上一轮 README 版式提交；本轮修改仍全部是未提交工作区差异。
 - Phase 9 完成审计：截图两处 Pro 模型值、全篇 Pro / Sol Pro 口径、四组中文使用示例、中文 Mermaid、通用术语中文化、测试合同同步和渲染验证均已有直接证据。
 - 最终连续门禁全部通过：10 项合同测试、Ruff lint、Ruff format、官方 Skill 校验、`git diff --check` 和规划完整性检查 `9/9`。
+
+## README Mermaid 流程图彻底中文化任务
+
+- 本轮开始时 Git 工作区干净，说明上一轮 README、测试和规划修改已进入当前基线。
+- 当前 README Mermaid 源码的普通动作标签已是中文，但仍可见 `model`、`GPT-5.6 Pro / GPT-5.6 Sol Pro` 和 `Pro` 等 English/产品标识。
+- 用户截图仍显示英文流程图，因此必须以截图逐项确认：是旧版渲染，还是用户要求连配置键/档位描述也采用中文表达。
+- 新截图展示的是旧图：包含 `Resolve model configuration`、`Target profile`、`Select Pro`、`Select Extra High`、`Open a blank chat`、`Send only the identity check`、`Matches configured profile`、`Gate passed: send task context` 和 Thinking 分支。
+- 当前 README 源码已不存在上述旧节点，且已收敛为 Pro / Sol Pro 单分支；截图与当前源码不是同一版本。
+- 为彻底满足“流程图改为中文”，当前可见的 `解析 model 配置` 将进一步改为“解析模型配置”，“匹配 Pro 配置族”改为“匹配专业模型配置”；正式模型名保留原文。
+- 应新增定向合同，禁止旧英文流程节点、Thinking 分支和可见 `model` 键回归。
+- Git 历史核对确认截图内容与提交 `7fa01a9` 的旧 Mermaid 逐字一致；当前 `HEAD` 为后续提交 `5838f34`，根因是查看了旧版本或旧渲染。
+- 最终实现进一步移除流程图可见标签中的 `model`、模型英文名和 `Pro`，使所有双引号标签均为纯中文；正式模型名仍保留在流程图外的模型配置章节。
+- 第一轮验证通过：11 项合同测试全部成功，新测试确认 Mermaid 所有可见标签不含英文字母；Ruff lint、Ruff format 和 `git diff --check` 均通过。
+- GitHub GFM 渲染接口成功接受新 Mermaid，并在实际渲染数据中返回全部中文可见标签；内容身份已随源码变化更新。
+- Phase 10 完成：截图旧版本已定位，当前图所有用户可见标签均为纯中文，英文只存在于不可见 Mermaid 语法和节点 ID。
+- 最终连续门禁全部通过：11 项合同测试、Ruff lint、Ruff format、官方 Skill 校验、`git diff --check` 和规划完整性检查 `10/10`。

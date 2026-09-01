@@ -165,6 +165,20 @@ class SkillContractTest(unittest.TestCase):
 
         extract_fenced_blocks(README_TEXT)
 
+    def test_readme_mermaid_visible_labels_are_localized(self) -> None:
+        mermaid_blocks = [
+            block
+            for block in extract_fenced_blocks(README_TEXT)
+            if block.startswith("flowchart ")
+        ]
+        self.assertEqual(len(mermaid_blocks), 1)
+
+        visible_labels = re.findall(r'"([^"]+)"', mermaid_blocks[0])
+        self.assertGreater(len(visible_labels), 0)
+        for label in visible_labels:
+            with self.subTest(label=label):
+                self.assertIsNone(re.search(r"[A-Za-z]", label))
+
     def test_skill_markdown_fenced_blocks_use_english_content(self) -> None:
         han_character = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
 

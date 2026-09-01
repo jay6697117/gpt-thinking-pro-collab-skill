@@ -9,6 +9,7 @@ TEST_SOURCE_TEXT = Path(__file__).read_text(encoding="utf-8")
 SKILL_TEXT = (ROOT_DIR / "SKILL.md").read_text(encoding="utf-8")
 README_TEXT = (ROOT_DIR / "README.md").read_text(encoding="utf-8")
 OPENAI_YAML_TEXT = (ROOT_DIR / "agents" / "openai.yaml").read_text(encoding="utf-8")
+STALE_INVOCATION = "$gpt-" + "pro-collab"
 
 
 def extract_fenced_blocks(markdown: str) -> list[str]:
@@ -63,11 +64,31 @@ class SkillContractTest(unittest.TestCase):
         self.assertIn("name: gpt-thinking-pro-collab", SKILL_TEXT)
 
     def test_model_configuration_has_a_backward_compatible_default(self) -> None:
-        self.assertIn("\u552f\u4e00\u7684 `model` \u914d\u7f6e\u9879", SKILL_TEXT)
         self.assertIn(
-            "\u672a\u63d0\u4f9b `model` \u65f6\u4f7f\u7528 `GPT-5.6 Pro`",
+            "`\u6a21\u578b` \u662f\u9996\u9009\u4e2d\u6587\u914d\u7f6e\u952e",
             SKILL_TEXT,
         )
+        self.assertIn("`model` \u662f\u5411\u540e\u517c\u5bb9\u522b\u540d", SKILL_TEXT)
+        self.assertIn(
+            "`\u6a21\u578b` \u4e0e `model` \u5747\u672a\u63d0\u4f9b\u65f6"
+            "\u4f7f\u7528 `GPT-5.6 Pro`",
+            SKILL_TEXT,
+        )
+
+    def test_localized_configuration_keys_preserve_english_aliases(self) -> None:
+        required_alias_rules = (
+            "`\u6a21\u5f0f` \u662f\u9996\u9009\u4e2d\u6587\u914d\u7f6e\u952e",
+            "`mode` \u662f\u5411\u540e\u517c\u5bb9\u522b\u540d",
+            "`\u6a21\u5f0f: <value>`\u3001`mode: <value>`",
+            "`\u6a21\u578b: <value>` \u6216 `model: <value>`",
+            "\u503c\u76f8\u540c\u5219\u6309\u4e00\u4e2a\u914d\u7f6e\u5904\u7406",
+            "\u503c\u4e0d\u540c\u65f6\u89c6\u4e3a\u51b2\u7a81\u914d\u7f6e",
+            "\u51fa\u73b0\u591a\u4e2a\u4e0d\u540c\u6a21\u5f0f\u503c\u65f6",
+        )
+
+        for required_rule in required_alias_rules:
+            with self.subTest(required_rule=required_rule):
+                self.assertIn(required_rule, SKILL_TEXT)
 
     def test_supported_profiles_map_to_the_expected_reasoning_modes(self) -> None:
         expected_profile_fields = (
@@ -110,12 +131,19 @@ class SkillContractTest(unittest.TestCase):
             with self.subTest(required_rule=required_rule):
                 self.assertIn(required_rule, SKILL_TEXT)
 
-    def test_readme_documents_pro_configuration(self) -> None:
+    def test_readme_documents_both_model_profiles(self) -> None:
         required_documentation = (
             "## \u6a21\u578b\u914d\u7f6e",
-            "model: GPT-5.6 Pro",
+            "\u6a21\u578b: GPT-5.6 Pro",
+            "\u6a21\u578b: GPT-5.6 Thinking",
             "`GPT-5.6 Sol Pro`",
+            "`GPT-5.6 Sol`",
             "`Pro`",
+            "`Extra High`",
+            (
+                "GPT-5.6 Thinking` \u662f\u672c Skill \u63d0\u4f9b\u7684"
+                "\u517c\u5bb9\u914d\u7f6e\u540d"
+            ),
             "\u4e0d\u4f1a\u5207\u6362\u5230\u53e6\u4e00\u4e2a\u6a21\u578b\u7ee7\u7eed",
         )
 
@@ -123,25 +151,46 @@ class SkillContractTest(unittest.TestCase):
             with self.subTest(required_text=required_text):
                 self.assertIn(required_text, README_TEXT)
 
-        self.assertNotIn("GPT-5.6 Thinking", README_TEXT)
-        self.assertNotIn("Extra High", README_TEXT)
-        self.assertIsNone(re.search(r"GPT-5\.6 Sol(?! Pro)", README_TEXT))
-
         usage_section = extract_level_two_section(README_TEXT, "\u4f7f\u7528")
         model_lines = [
-            line for line in usage_section.splitlines() if line.startswith("model:")
+            line
+            for line in usage_section.splitlines()
+            if line.startswith("\u6a21\u578b:")
         ]
-        self.assertEqual(model_lines, ["model: GPT-5.6 Pro"] * 2)
+        self.assertEqual(
+            model_lines,
+            [
+                "\u6a21\u578b: GPT-5.6 Pro",
+                "\u6a21\u578b: GPT-5.6 Thinking",
+                "\u6a21\u578b: GPT-5.6 Pro",
+            ],
+        )
+        self.assertIn("\u6a21\u5f0f: delegate", usage_section)
+        self.assertNotIn("\nmodel:", usage_section)
+        self.assertNotIn("\nmode:", usage_section)
 
     def test_ui_metadata_matches_the_configurable_model_workflow(self) -> None:
         self.assertIn(
             'display_name: "GPT \u53ef\u914d\u7f6e\u6a21\u578b\u534f\u4f5c"',
             OPENAI_YAML_TEXT,
         )
-        self.assertIn("GPT-5.6 Pro \u6216 Thinking", OPENAI_YAML_TEXT)
-        self.assertIn("$gpt-pro-collab", OPENAI_YAML_TEXT)
-        self.assertIn("model: GPT-5.6 Pro", OPENAI_YAML_TEXT)
+        self.assertIn(
+            "GPT-5.6 Pro \u6216 GPT-5.6 Thinking",
+            OPENAI_YAML_TEXT,
+        )
+        self.assertIn("$gpt-thinking-pro-collab", OPENAI_YAML_TEXT)
+        self.assertNotIn(STALE_INVOCATION, OPENAI_YAML_TEXT)
+        self.assertIn("\u6a21\u578b: GPT-5.6 Pro", OPENAI_YAML_TEXT)
+        self.assertIn("\u6a21\u5f0f: consult", OPENAI_YAML_TEXT)
         self.assertIn("allow_implicit_invocation: false", OPENAI_YAML_TEXT)
+
+    def test_canonical_invocation_name_is_consistent(self) -> None:
+        for artifact in (SKILL_TEXT, README_TEXT, OPENAI_YAML_TEXT):
+            with self.subTest(artifact=artifact[:32]):
+                self.assertIn("$gpt-thinking-pro-collab", artifact)
+
+        self.assertNotIn(STALE_INVOCATION, SKILL_TEXT)
+        self.assertNotIn(STALE_INVOCATION, OPENAI_YAML_TEXT)
 
     def test_python_source_uses_ascii_only(self) -> None:
         TEST_SOURCE_TEXT.encode("ascii")

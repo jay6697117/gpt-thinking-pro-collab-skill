@@ -298,3 +298,47 @@
 - `git diff --check`：通过。
 - 规划完整性检查：`ALL PHASES COMPLETE (10/10)`。
 - 最终工作区仅包含 README、定向合同测试和三份规划记录的预期未提交修改；未提交、未推送。
+
+## 2026-09-01：GPT-5.6 Thinking 兼容与中文配置键
+
+### 已执行
+
+- 进入 Plan 模式，读取现有规划记录、Skill、README、UI 元数据、合同测试和 Git 状态。
+- 按官方 OpenAI 文档核对 GPT-5.6 Sol 命名与 `Extra High` / `极高` 推理强度。
+- 确认根因是交付层契约分裂：运行 Skill 支持双模型，README 与测试为 Pro-only，两个元数据入口仍使用旧 Skill 调用名。
+- 用户追加要求后进入 Code 模式：中文示例将优先使用 `模型:` / `模式:`，英文键保留为兼容别名。
+- 新增 Phase 11，并记录双模型映射、中文键别名、冲突处理与规范调用名决策。
+- 修改 `SKILL.md`：统一规范调用名，新增 `模型` / `模式` 首选键、英文兼容别名、跨别名冲突处理和非法值 fail-fast 规则。
+- 修改 `README.md`：恢复 Pro 与 Thinking 双配置族、Thinking 到 Sol + 极高档位的说明与双分支门禁图，并把结构化示例改为 `模型:` / `模式:`。
+- 修改 `agents/openai.yaml`：默认提示改用 `$gpt-thinking-pro-collab` 和中文配置键。
+- 修改 `tests/test_skill_contract.py`：删除 Pro-only 反向合同，新增双模型、中文键、英文兼容别名和规范调用名合同。
+- 重新核对 OpenAI 官方当前模型页与 ChatGPT Learn：`GPT-5.6 Sol`、`gpt-5.6` 路由关系和“极高 / Extra high”档位均有当前文档证据。
+- 统一模式冲突算法：结构化中英文键和自然语言显式值进入同一候选集合，相同值合并，不同值在浏览器动作前失败。
+- 第二轮执行 13 项合同测试；全部通过。
+- 第二轮执行 Ruff lint 与 format；全部通过。
+- 第二轮执行官方 Skill 校验；输出 `Skill is valid!`。
+- 第二轮执行 `git diff --check`；通过。
+- 使用 GitHub Markdown API 进行 GFM 实际渲染；双模型 Mermaid 中文标签、Thinking 中文模型键和 `模式: delegate` 共 5 个标记全部命中，命令退出码为 0。
+
+### 当前阶段
+
+- Phase 11 已完成。
+
+### 错误
+
+- 首轮 13 项合同测试、官方 Skill 校验、Ruff format 与 `git diff --check` 均通过；Ruff lint 唯一报告 `ISC004`，根因是测试元组中的长 Unicode 转义字符串使用了无括号隐式拼接，已增加显式括号。
+- 第二轮多文件补丁因包含一个空更新段而被 `apply_patch` 校验拒绝，未产生部分修改；移除多余标记后完整补丁应用成功。
+- 最终清理时，环境安全策略拒绝对精确 `tests/__pycache__` 执行 `rm -rf`；未删除文件，且同批静态审计没有启动。下一步改用只匹配缓存文件的安全删除方式。
+
+### 下一步
+
+- 无必需工作；等待用户审阅或授权后续 Git 操作。
+
+### 最终复核
+
+- 使用精确文件名删除测试生成的单个 `.pyc`，并移除空 `tests/__pycache__`；未删除源码或用户数据。
+- 静态合同审计通过：三个核心入口使用规范调用名，README 无行首 English 配置示例，3 条 `模型:` 和 1 条 `模式: delegate` 数量符合预期，双配置族映射完整。
+- 最终 `git diff --check` 通过。
+- 最终 Git 状态仅包含 README、Skill、UI 元数据、合同测试和三份规划记录；分支与 `origin/main` 对齐，本轮未提交、未推送。
+- 规划完整性脚本因文件无可执行权限直接返回 `126`，未运行检查；改用 `bash` 调用同一脚本。
+- 使用 `bash` 重跑规划完整性检查；输出 `ALL PHASES COMPLETE (11/11)`，退出码为 0。

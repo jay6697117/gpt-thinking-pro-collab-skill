@@ -239,3 +239,19 @@
 - GitHub GFM 渲染接口成功接受新 Mermaid，并在实际渲染数据中返回全部中文可见标签；内容身份已随源码变化更新。
 - Phase 10 完成：截图旧版本已定位，当前图所有用户可见标签均为纯中文，英文只存在于不可见 Mermaid 语法和节点 ID。
 - 最终连续门禁全部通过：11 项合同测试、Ruff lint、Ruff format、官方 Skill 校验、`git diff --check` 和规划完整性检查 `10/10`。
+
+## GPT-5.6 Thinking 兼容与中文配置键任务
+
+- 当前工作区开始时干净，`HEAD` 与 `origin/main` 对齐；本轮不提交、不推送。
+- `SKILL.md` 已存在正确的双配置族映射：Pro / Sol Pro 对应 `Pro`，Thinking / Sol 对应 `Extra High` / `极高`。
+- README 被上一阶段收敛为 Pro-only，并且合同测试主动禁止 Thinking、独立 Sol 与 Extra High；这与当前恢复 Thinking 兼容的目标直接冲突。
+- `SKILL.md` frontmatter 和 `agents/openai.yaml` 的默认提示仍显式调用旧 `$gpt-pro-collab`，与当前规范名称 `gpt-thinking-pro-collab` 不一致。
+- OpenAI 当前官方文档将旗舰模型命名为 `GPT-5.6 Sol`，并公开 `Extra High` / `极高` 推理强度；因此本项目可保留 `GPT-5.6 Thinking` 作为面向用户的兼容配置名，但必须明确映射到官方 Sol 配置。
+- 新增用户要求：README 示例把 `model:` / `mode:` 优先改为 `模型:` / `模式:`；为避免破坏既有提示词，运行契约同时接受中英文键，并对跨别名冲突执行 fail-fast。
+- 官方 OpenAI 当前模型页确认 `gpt-5.6` 指向 `GPT-5.6 Sol`；ChatGPT Learn 当前模型说明确认 Sol 可用“极高 / Extra high”推理强度，因此 README 中的兼容映射有当前官方依据。
+- 模式解析旧文案对结构化键与自然语言同时出现时的优先级不够明确；现统一为收集所有显式候选值、相同合并、不同值在浏览器动作前失败。
+- 核心交付文件扫描确认：README 的结构化示例已无行首 `model:` / `mode:`，现有 3 条 `模型:` 分别覆盖 Pro、Thinking 和 Pro delegate，并有 1 条 `模式: delegate`。
+- GitHub GFM 渲染返回 28,339 字节 HTML，5 个关键渲染标记全部存在；双分支 Mermaid 与中文配置键没有被 Markdown 解析破坏。
+- 最终静态合同审计退出码为 0：核心入口的规范调用名、中文示例数量、English 示例残留和双配置族映射均满足合同。
+- 最终 Git 差异为 7 个预期文件：4 个真实交付文件与 3 个 planning-with-files 记录；没有意外生成物，也没有执行提交、推送或历史改写。
+- planning-with-files 最终检查确认 11 个阶段全部完成。

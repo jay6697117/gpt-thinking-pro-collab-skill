@@ -211,3 +211,54 @@
 - `git diff --check` 在最终文件状态下通过。
 - `planning-with-files` 完整性脚本输出 `ALL PHASES COMPLETE (8/8)`。
 - 最终工作区仅包含 README 与三份规划记录的预期修改，未提交、未推送。
+
+## 2026-09-01：README 默认模型与全篇中文化
+
+### 已执行
+
+- 进入 Plan 模式，确认本轮目标是统一 README 默认模型示例并完成全篇可读说明中文化。
+- 重新读取 `planning-with-files` 完整说明并运行 session catch-up；没有未同步恢复输出。
+- 读取现有三份规划文件和 Git 状态；当前分支领先远端 1 个提交，工作区干净。
+- 新增 Phase 9，记录最新用户要求对旧 English-only 示例决策的覆盖关系。
+
+### 当前阶段
+
+- Phase 9 已完成。
+
+### 错误
+
+- 首轮合同测试 10 项中 2 个测试方法失败，共报告 4 个断言失败；根因是测试按子串切分“## 使用”，误命中安装章节的三级标题，不是 README 缺失目标内容。已改为按完整二级标题行提取章节。
+
+### 新增证据
+
+- 原始尺寸检查两张截图，确认两处显式 Thinking 模型值、Thinking 示例标题、英文 `Request` / `Acceptance` 文案及长行可读性均需修订。
+- 确定配置键和技术标识符保持原样，任务、需求、验收和自然语言说明全部改为简体中文。
+- 完整读取 README 并扫描所有 GPT-5.6、Thinking、Sol、Extra High、模型配置和纯英文行。
+- 确认模型口径需要覆盖简介、快速开始、模型配置、门禁流程图、使用、演进说明和 FAQ；中文化需覆盖使用代码块、Mermaid 标签及少量通用英文术语。
+- 核对 OpenAI 当前官方 GPT-5.6 说明，确认 `Pro` 档位由 `GPT-5.6 Sol Pro` 提供。
+- 检查 `SKILL.md`、`agents/openai.yaml` 和合同测试；确认运行时默认已是 Pro，但两条 README 测试契约与本轮 Pro-only 文档和中文代码块要求冲突，需要最小更新。
+- 完整读取合同测试，确定最小同步点并选择“README 全文修订 + README 合同更新”方案；不修改 Skill 运行时模型映射。
+- 切换到 Code 模式，准备修改 README 和 `tests/test_skill_contract.py`。
+- 完成 README 全篇模型口径与中文化修改，并最小同步三类合同断言。
+- 审阅 README 和测试完整 diff；模型残留与纯英文行扫描符合预期，使用示例长验收行已拆分。
+- 首轮 Ruff lint、Ruff format 和 `git diff --check` 均通过；合同测试暴露章节截取辅助逻辑错误，已完成定向修复。
+- 重新执行完整合同测试：10 项全部通过。
+- 重新执行 Ruff lint、Ruff format 和 `git diff --check`：全部通过。
+- 通过 GitHub GFM 渲染接口核验中文 Mermaid 与使用代码块；渲染结构正常。
+- 执行模型/英文残留扫描和使用章节结构断言；所有定向检查通过。
+- 发现 Git 跟踪状态从任务开始时的 `ahead 1` 变为与 `origin/main` 对齐；本轮未执行任何 Git 写入或网络同步命令，下一步只读核对引用。
+- 只读核对 `HEAD` 与 `origin/main`；两者当前都为 `7fa01a9`，本轮 5 个文件的差异仍未提交、未推送。
+
+### 下一步
+
+- 无必需工作；等待用户审阅或提交。
+
+### 最终复核
+
+- 合同测试：10 项全部通过。
+- Ruff lint：通过。
+- Ruff format：通过。
+- 官方 Skill 校验：输出 `Skill is valid!`。
+- `git diff --check`：通过。
+- 规划完整性检查：`ALL PHASES COMPLETE (9/9)`。
+- 最终工作区包含 README、合同测试和三份规划记录的预期未提交修改；未提交、未推送。

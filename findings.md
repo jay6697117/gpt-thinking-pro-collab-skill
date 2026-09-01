@@ -189,3 +189,37 @@
 - 验证扫描未发现新生成的 Python cache；仓库已有 `.DS_Store`，任务前后 Git 状态均未把它列为变更，因此不删除用户既有文件。
 - 最终结构断言通过：使用章节包含 4 个 `text` 代码块、4 次新 Skill 调用、2 个 Thinking 模型配置、1 个 `delegate` 配置，并且不再包含 blockquote 示例。
 - 最终 Git 审计只列出 README 和三份强制规划记录；没有修改 `SKILL.md`、测试、元数据或其他业务文件。
+
+## README 默认模型与全篇中文化任务
+
+- 当前权威工作区为 `main...origin/main [ahead 1]`，任务开始时没有未提交修改；上一轮 README 和规划变更已进入现有提交。
+- 用户明确要求“使用”区域所有显式 `model` 示例改为 `GPT-5.6 Pro`，并全篇审计其他模型表述。
+- 用户明确要求截图所示英文说明改为中文，并继续审计 README 中所有其他可中文化内容。
+- 本轮只修改 README 和强制规划记录，不改写现有提交或扩大到 Skill 运行逻辑，除非源码证据证明 README 无法在不失真的情况下独立修订。
+- 截图 1 明确框出“使用 GPT-5.6 Thinking”和 `delegate` 示例中的两个 `model: GPT-5.6 Thinking`；两处都应改为 `model: GPT-5.6 Pro`，对应三级标题也应同步为 Pro。
+- 截图 2 聚焦代码块中的 `Request`、`Acceptance` 和英文说明，用户要求这些可读文本改成中文。
+- `model:` 与 `mode:` 是结构化配置键，应保持 English；Skill 名称、`delegate`、API、lint 等技术标识符同样不做字面翻译。
+- 当前单行英文 `Acceptance` 在截图中产生横向滚动；中文化时应改为可读的多行验收清单，避免继续制造超长代码行。
+- README 全文仍在简介、快速开始选择表、模型配置表、模型说明、Mermaid 流程图、演进说明和 FAQ 中展示 Thinking / Sol / Extra High；仅修改“使用”示例不足以满足全篇模型审计要求。
+- 模型文档应统一为一个 Pro 配置族：主配置名 `GPT-5.6 Pro`、兼容名 `GPT-5.6 Sol Pro`、推理档位 `Pro`；删除 README 中 Thinking / Sol / Extra High / mini 的公开配置说明。
+- 纯英文行扫描显示真正可翻译的内容集中在 Mermaid 节点标签、四个使用示例和自然语言调用句；安装命令、文件树、URL、路径、配置键和真实输出 `Skill is valid!` 必须保持字面值。
+- 中文正文中还存在少量可本地化通用词：`Browser`、`private`、`diff`、`Pull Request`、`API Key`、`Token` 等；应在不破坏技术准确性的前提下改成中文或中英组合。
+- OpenAI 当前官方说明明确写明：ChatGPT 的 `Pro` 档位由 `GPT-5.6 Sol Pro` 提供；这支持把 README 统一描述为 `GPT-5.6 Pro` 主配置和 `GPT-5.6 Sol Pro` 兼容名。
+- `SKILL.md` 运行时仍默认 `GPT-5.6 Pro`，同时支持 Pro / Sol Pro 与 Thinking / Sol 两组配置；用户本轮只指定 README 公共口径，因此不修改运行时模型集合。
+- 现有 README 合同测试强制出现 `model: GPT-5.6 Thinking`、`GPT-5.6 Sol`、`Extra High`，并禁止 README fenced code block 使用汉字；这两项与最新用户要求直接冲突，必须最小同步测试契约。
+- `SKILL.md` 的模型映射、fail-fast 和 fenced code block 检查仍有价值，不应因 README 中文化而放宽运行时合同。
+- 方案决策：采用“README 全文 Pro / Sol Pro 收敛 + 可读内容中文化 + 最小同步 README 合同测试”；不采用只改截图的局部补丁，也不扩大为运行时删除 Thinking。
+- 测试同步范围限定为：修正 frontmatter 的旧 Skill 名称断言；把 README Thinking 文档合同改为 Pro / Sol Pro 与 Thinking 残留禁令；允许 README 使用中文代码块，但继续要求 `SKILL.md` fenced code block 不含汉字；新增使用示例中文化断言。
+- 第一轮 README diff 已覆盖简介、快速开始、协作模式、模型配置、Mermaid、安装标题、四个使用示例、安全术语、更新、演进说明和 FAQ。
+- 模型残留扫描只返回 Pro / Sol Pro；大写 `GPT-5.6 Thinking`、独立 Sol、Extra High、`Request:`、`Acceptance:` 和英文自然语言示例均无残留。
+- 纯英文整行扫描只剩命令、路径、文件树、配置键、Skill 标识和校验器固定输出 `Skill is valid!`，均属于不可翻译字面量。
+- “使用”区域的 `delegate` 验收已拆为多行中文清单，消除了截图中的超长英文横向滚动来源。
+- 修正章节提取辅助函数后，10 项合同测试全部通过；测试同时覆盖 Pro-only README、两条 Pro 示例、中文使用文案、运行时模型映射和 Skill 代码块语言。
+- Ruff lint 与格式检查通过，`git diff --check` 通过。
+- GitHub GFM 渲染成功识别中文 Mermaid，并把四个使用示例渲染为独立 `text` 代码块；中文需求、验收和 Pro 模型值均出现在正确章节。
+- 最终定向残留扫描为 0；使用章节结构断言确认 2 条显式 `model:` 均为 Pro、4 条中文需求和 1 组中文验收。
+- 纯英文整行复核只剩不可翻译的命令、路径、文件树、配置键、Skill 标识和固定校验输出。
+- Git 状态在本轮中从 `ahead 1` 变为不显示领先，但本轮没有执行提交、推送、拉取或 fetch；需在完成前只读核对 HEAD 与 `origin/main`。
+- 只读核对确认当前 `HEAD` 与 `origin/main` 都指向 `7fa01a9`，即上一轮 README 版式提交；本轮修改仍全部是未提交工作区差异。
+- Phase 9 完成审计：截图两处 Pro 模型值、全篇 Pro / Sol Pro 口径、四组中文使用示例、中文 Mermaid、通用术语中文化、测试合同同步和渲染验证均已有直接证据。
+- 最终连续门禁全部通过：10 项合同测试、Ruff lint、Ruff format、官方 Skill 校验、`git diff --check` 和规划完整性检查 `9/9`。

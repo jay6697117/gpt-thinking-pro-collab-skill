@@ -33,6 +33,21 @@ def extract_fenced_blocks(markdown: str) -> list[str]:
     return blocks
 
 
+def extract_level_two_section(markdown: str, heading: str) -> str:
+    lines = markdown.splitlines()
+    marker = f"## {heading}"
+    section_start = lines.index(marker) + 1
+    section_end = next(
+        (
+            index
+            for index in range(section_start, len(lines))
+            if lines[index].startswith("## ")
+        ),
+        len(lines),
+    )
+    return "\n".join(lines[section_start:section_end])
+
+
 class SkillContractTest(unittest.TestCase):
     def test_frontmatter_contains_only_supported_keys(self) -> None:
         lines = SKILL_TEXT.splitlines()
@@ -45,7 +60,7 @@ class SkillContractTest(unittest.TestCase):
         }
 
         self.assertEqual(keys, {"name", "description"})
-        self.assertIn("name: gpt-pro-collab", SKILL_TEXT)
+        self.assertIn("name: gpt-thinking-pro-collab", SKILL_TEXT)
 
     def test_model_configuration_has_a_backward_compatible_default(self) -> None:
         self.assertIn("\u552f\u4e00\u7684 `model` \u914d\u7f6e\u9879", SKILL_TEXT)
@@ -95,18 +110,28 @@ class SkillContractTest(unittest.TestCase):
             with self.subTest(required_rule=required_rule):
                 self.assertIn(required_rule, SKILL_TEXT)
 
-    def test_readme_documents_thinking_configuration(self) -> None:
+    def test_readme_documents_pro_configuration(self) -> None:
         required_documentation = (
             "## \u6a21\u578b\u914d\u7f6e",
-            "model: GPT-5.6 Thinking",
-            "`GPT-5.6 Sol`",
-            "`Extra High`",
+            "model: GPT-5.6 Pro",
+            "`GPT-5.6 Sol Pro`",
+            "`Pro`",
             "\u4e0d\u4f1a\u5207\u6362\u5230\u53e6\u4e00\u4e2a\u6a21\u578b\u7ee7\u7eed",
         )
 
         for required_text in required_documentation:
             with self.subTest(required_text=required_text):
                 self.assertIn(required_text, README_TEXT)
+
+        self.assertNotIn("GPT-5.6 Thinking", README_TEXT)
+        self.assertNotIn("Extra High", README_TEXT)
+        self.assertIsNone(re.search(r"GPT-5\.6 Sol(?! Pro)", README_TEXT))
+
+        usage_section = extract_level_two_section(README_TEXT, "\u4f7f\u7528")
+        model_lines = [
+            line for line in usage_section.splitlines() if line.startswith("model:")
+        ]
+        self.assertEqual(model_lines, ["model: GPT-5.6 Pro"] * 2)
 
     def test_ui_metadata_matches_the_configurable_model_workflow(self) -> None:
         self.assertIn(
@@ -121,16 +146,31 @@ class SkillContractTest(unittest.TestCase):
     def test_python_source_uses_ascii_only(self) -> None:
         TEST_SOURCE_TEXT.encode("ascii")
 
-    def test_markdown_fenced_blocks_use_english_content(self) -> None:
+    def test_readme_usage_examples_are_localized(self) -> None:
+        usage_section = extract_level_two_section(README_TEXT, "\u4f7f\u7528")
+        required_localized_text = (
+            "\u9700\u6c42\uff1a",
+            "\u9a8c\u6536\uff1a",
+            "\u4f7f\u7528 GPT-5.6 Pro \u548c delegate \u6a21\u5f0f",
+        )
+        stale_english_text = ("Request:", "Acceptance:", "Use GPT-5.6")
+
+        for required_text in required_localized_text:
+            with self.subTest(required_text=required_text):
+                self.assertIn(required_text, usage_section)
+
+        for stale_text in stale_english_text:
+            with self.subTest(stale_text=stale_text):
+                self.assertNotIn(stale_text, usage_section)
+
+        extract_fenced_blocks(README_TEXT)
+
+    def test_skill_markdown_fenced_blocks_use_english_content(self) -> None:
         han_character = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff]")
 
-        for file_name, markdown in (
-            ("README.md", README_TEXT),
-            ("SKILL.md", SKILL_TEXT),
-        ):
-            for block_index, block in enumerate(extract_fenced_blocks(markdown)):
-                with self.subTest(file_name=file_name, block_index=block_index):
-                    self.assertIsNone(han_character.search(block))
+        for block_index, block in enumerate(extract_fenced_blocks(SKILL_TEXT)):
+            with self.subTest(block_index=block_index):
+                self.assertIsNone(han_character.search(block))
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # gpt-thinking-pro-collab
 
-> 让 Codex 负责本地工程、代码集成和独立验收，并按配置通过内置浏览器向 GPT-5.6 Pro 或 GPT-5.6 Thinking 求助。
+> 让 Codex 负责本地工程、代码集成和独立验收，并按配置通过内置浏览器向 GPT-5.6 Pro 或 GPT-5.6 Sol Pro 求助。
 
 这是一个面向 Codex Desktop 的显式调用型 Skill。它不会自动触发；只有调用 `$gpt-thinking-pro-collab`，或明确要求 Codex 使用内置浏览器与目标模型协作时才会启用。
 
@@ -14,14 +14,14 @@
 
 开始前请确认：
 
-- 正在使用 Codex Desktop，并已安装内置 Browser；
+- 正在使用 Codex Desktop，并已安装内置浏览器；
 - 已在内置浏览器中登录 ChatGPT；
-- ChatGPT 账号能够使用目标模型对应的 `Pro` 或 `Extra High` / `极高` 档位；
+- ChatGPT 账号能够使用目标模型对应的 `Pro` 档位；
 - Codex 可以读取目标仓库并运行必要测试。
 
-遇到账号选择、密码、验证码、Passkey 或两步验证时，Codex 会暂停浏览器步骤，由用户亲自完成认证，不会索取凭据。
+遇到账号选择、密码、验证码、通行密钥或两步验证时，Codex 会暂停浏览器步骤，由用户亲自完成认证，不会索取凭据。
 
-使用 Skills CLI 全局安装：
+使用 Skills 命令行工具全局安装：
 
 ```bash
 npx skills add jay6697117/gpt-thinking-pro-collab-skill \
@@ -31,7 +31,7 @@ npx skills add jay6697117/gpt-thinking-pro-collab-skill \
   -y
 ```
 
-如果仓库仍为 `private`，当前 GitHub 身份必须拥有读取权限。安装后新建一个 Codex 任务，并直接用中文描述目标：
+如果仓库仍为私有仓库，当前 GitHub 身份必须拥有读取权限。安装后新建一个 Codex 任务，并直接用中文描述目标：
 
 > `$gpt-thinking-pro-collab`
 >
@@ -42,8 +42,8 @@ npx skills add jay6697117/gpt-thinking-pro-collab-skill \
 | 目标 | `model` | `mode` |
 | --- | --- | --- |
 | Codex 先本地处理，只在必要时求助 | 省略，默认 `GPT-5.6 Pro` | 省略，默认 `consult` |
-| 明确使用 Thinking / Sol 的 `Extra High` 档位 | `GPT-5.6 Thinking` | `consult` |
-| 让目标模型主写，Codex 本地集成验收 | 任一受支持模型 | `delegate` |
+| 显式使用官方兼容名 | `GPT-5.6 Sol Pro` | `consult` |
+| 让目标模型主写，Codex 本地集成验收 | `GPT-5.6 Pro` 或 `GPT-5.6 Sol Pro` | `delegate` |
 
 ## 适用场景
 
@@ -76,7 +76,7 @@ npx skills add jay6697117/gpt-thinking-pro-collab-skill \
 | 模式 | 主要工作方 | 适用情况 | Codex 的职责 |
 | --- | --- | --- | --- |
 | `consult` | Codex | 默认模式；遇到关键问题时再求助 | 本地实现、按需咨询、整合建议、运行验证 |
-| `delegate` | 目标模型 | 希望目标模型提供完整文件、统一 diff 或明确补丁 | 准备上下文、审查交付、接入修正、独立验收 |
+| `delegate` | 目标模型 | 希望目标模型提供完整文件、统一差异补丁或明确补丁 | 准备上下文、审查交付、接入修正、独立验收 |
 
 ### `consult`：按需求助
 
@@ -92,7 +92,7 @@ npx skills add jay6697117/gpt-thinking-pro-collab-skill \
 
 ### `delegate`：目标模型主写，Codex 集成
 
-Codex 先理解项目并整理可验收的工程任务，再让目标模型提供完整文件、统一 diff 或明确补丁。之后由 Codex：
+Codex 先理解项目并整理可验收的工程任务，再让目标模型提供完整文件、统一差异补丁或明确补丁。之后由 Codex：
 
 1. 审查目标模型的假设和代码；
 2. 把必要改动应用到本地；
@@ -103,14 +103,13 @@ Codex 先理解项目并整理可验收的工程任务，再让目标模型提�
 
 每次调用可以设置唯一的 `model` 配置项。未设置时默认使用 `GPT-5.6 Pro`，因此既有调用不需要修改。
 
-模型配置与协作模式相互独立：两个模型都可以用于 `consult` 或 `delegate`，Skill 不会根据任务类型自行改写用户选择。
+模型配置与协作模式相互独立：两个受支持的配置名都可以用于 `consult` 或 `delegate`，Skill 不会根据任务类型自行改写用户选择。
 
 | `model` 配置值 | ChatGPT 推理档位 | 门禁接受的模型身份 |
 | --- | --- | --- |
 | `GPT-5.6 Pro` 或 `GPT-5.6 Sol Pro` | `Pro` | `GPT-5.6 Pro`、`5.6 Pro`、`GPT-5.6 Sol Pro`、`5.6 Sol Pro` |
-| `GPT-5.6 Thinking` 或 `GPT-5.6 Sol` | `Extra High`，中文界面为 `极高` | `GPT-5.6 Thinking`、`5.6 Thinking`、`GPT-5.6 Sol`、`5.6 Sol` |
 
-`GPT-5.6 Thinking` 是兼容配置名：根据 [OpenAI 的 GPT-5.6 ChatGPT 说明](https://help.openai.com/en/articles/20001354-gpt-56-in-chatgpt) 和 [模型选择器更新记录](https://help.openai.com/en/articles/6825453-chatgpt-release-notes)，当前 `Extra High` 使用 `GPT-5.6 Sol`，原 `Thinking Heavy` 档位已更名为 `Extra High`。
+`GPT-5.6 Sol Pro` 是 `Pro` 档位使用的官方模型名。根据 [OpenAI 的 GPT-5.6 ChatGPT 说明](https://help.openai.com/en/articles/20001354-gpt-56-in-chatgpt)，`GPT-5.6 Pro` 与 `GPT-5.6 Sol Pro` 在本 Skill 中指向同一个 Pro 配置族。
 
 显式配置模型后，Skill 会把该选择固定到本次任务的所有新对话。未知值、冲突值、目标档位不可用、模型自报不匹配或运行中发生自动回退时，都会在发送更多项目上下文前失败；不会切换到另一个模型继续。
 
@@ -122,16 +121,14 @@ Codex 先理解项目并整理可验收的工程任务，再让目标模型提�
 
 ```mermaid
 flowchart TD
-    CONFIG["Resolve model configuration"] --> PROFILE{"Target profile"}
-    PROFILE -->|"GPT-5.6 Pro"| PRO["Select Pro"]
-    PROFILE -->|"GPT-5.6 Thinking"| THINKING["Select Extra High"]
-    PRO --> CHAT["Open a blank chat"]
-    THINKING --> CHAT
-    CHAT --> ASK["Send only the identity check"]
-    ASK -->|"Matches configured profile"| PASS["Gate passed: send task context"]
-    ASK -->|"Mismatch or ambiguity"| FAIL["Stop target-model invocation"]
-    PASS --> WATCH["Monitor mode and fallback status"]
-    WATCH -->|"Model changes or falls back"| FAIL
+    CONFIG["解析 model 配置"] --> PROFILE{"目标配置"}
+    PROFILE -->|"GPT-5.6 Pro / GPT-5.6 Sol Pro"| PRO["选择 Pro 档位"]
+    PRO --> CHAT["打开空白对话"]
+    CHAT --> ASK["只发送模型身份检查"]
+    ASK -->|"匹配 Pro 配置族"| PASS["门禁通过：发送任务上下文"]
+    ASK -->|"不匹配或含糊"| FAIL["停止目标模型调用"]
+    PASS --> WATCH["监控模式与回退状态"]
+    WATCH -->|"模型变化或发生回退"| FAIL
 ```
 
 如果门禁未通过，Skill 会：
@@ -150,7 +147,7 @@ Skill 不会代替用户配置代理或 VPN，也不会尝试绕过地区、账�
 
 ## 安装
 
-### 使用 Skills CLI（推荐）
+### 使用 Skills 命令行工具（推荐）
 
 先确认仓库中的 Skill 可以被识别：
 
@@ -174,7 +171,7 @@ Skill 被 skills.sh 收录后，可以在以下页面查看：
 
 <https://skills.sh/jay6697117/gpt-thinking-pro-collab-skill/gpt-thinking-pro-collab>
 
-### 使用 GitHub CLI
+### 使用 GitHub 命令行工具
 
 也可以直接克隆到个人 Skill 目录：
 
@@ -208,18 +205,18 @@ gh repo clone jay6697117/gpt-thinking-pro-collab-skill ~/.codex/skills/gpt-think
 ```text
 $gpt-thinking-pro-collab
 
-Request: Fix duplicate requests when users rapidly switch list filters.
+需求：修复用户快速切换列表筛选条件时产生的重复请求。
 ```
 
 验收标准可以省略，Codex 会结合仓库规则、现有测试和变更风险自动补全。
 
-### 使用 GPT-5.6 Thinking
+### 使用 GPT-5.6 Pro
 
 ```text
 $gpt-thinking-pro-collab
 
-model: GPT-5.6 Thinking
-Request: Analyze the repository architecture and propose a maintainable repair plan.
+model: GPT-5.6 Pro
+需求：分析仓库架构，并提出易于维护的修复方案。
 ```
 
 ### 目标模型主写、Codex 集成
@@ -227,10 +224,15 @@ Request: Analyze the repository architecture and propose a maintainable repair p
 ```text
 $gpt-thinking-pro-collab
 
-model: GPT-5.6 Thinking
+model: GPT-5.6 Pro
 mode: delegate
-Request: Refactor the payment callback module.
-Acceptance: Preserve the existing API and callback protocol, prevent duplicate processing, keep rejecting invalid signatures with existing error semantics, and pass lint, type checks, unit tests, and the production build.
+需求：重构支付回调模块，将签名校验、幂等处理和业务编排拆分为清晰边界。
+验收：
+- 保持现有 API 和回调协议兼容；
+- 重复回调不会触发重复业务处理；
+- 非法签名继续被拒绝，并保持既有错误语义；
+- 通过代码检查、类型检查、单元测试和生产构建；
+- 最终改动由 Codex 在本地集成并独立验证。
 ```
 
 也可以用自然语言指定模型和协作模式：
@@ -238,8 +240,8 @@ Acceptance: Preserve the existing API and callback protocol, prevent duplicate p
 ```text
 $gpt-thinking-pro-collab
 
-Use GPT-5.6 Pro in delegate mode. Let the target model write the code, then have Codex integrate it locally and verify it independently.
-Request: Add an audit-log query page to the admin system.
+使用 GPT-5.6 Pro 和 delegate 模式，让目标模型主写代码，再由 Codex 在本地集成并独立验证。
+需求：为后台管理系统增加审计日志查询页面。
 ```
 
 ## Codex 会执行的流程
@@ -259,14 +261,14 @@ Request: Add an audit-log query page to the admin system.
 
 ### 源码与凭据
 
-`consult` 模式优先提供最小必要的源码片段和错误日志，不会默认创建 ZIP。
+`consult` 模式优先提供最小必要的源码片段和错误日志，不会默认创建 ZIP 压缩包。
 
 `delegate` 模式只有在上下文较多且确有必要时才会准备源码包，并遵循以下约束：
 
 - 优先采用文件白名单；
 - 排除 `.git`、依赖目录、构建产物、缓存和数据库；
 - 排除运行状态和浏览器状态；
-- 排除 `.env`、API Key、Token、私钥、Cookie、证书及其他凭据；
+- 排除 `.env`、API 密钥、访问令牌、私钥、浏览器 Cookie、证书及其他凭据；
 - 发送前检查归档清单并执行可用的密钥扫描；
 - 记录源码基线、工作区状态、归档大小和 SHA-256；
 - 页面没有明确确认附件上传成功时，不得声称已经上传。
@@ -295,7 +297,7 @@ Request: Add an audit-log query page to the admin system.
 
 - 提交 Git；
 - 推送远程；
-- 创建 Pull Request；
+- 创建拉取请求；
 - 部署；
 - 迁移数据库；
 - 修改线上配置；
@@ -318,13 +320,13 @@ Request: Add an audit-log query page to the admin system.
 - 实际本地修改；
 - Codex 独立运行的测试及结果；
 - 未验证风险或外部阻塞；
-- 代码当前只是本地修改，还是已经获得授权提交、推送、创建 PR 或部署。
+- 代码当前只是本地修改，还是已经获得授权提交、推送、创建拉取请求或部署。
 
 门禁失败时，Codex 不会假装继续完成目标模型委托，而会明确报告调用失败。
 
 ## 更新
 
-如果通过 Skills CLI 安装：
+如果通过 Skills 命令行工具安装：
 
 ```bash
 npx skills update gpt-thinking-pro-collab -g -y
@@ -395,7 +397,7 @@ rg -n 'TODO|\[TODO' .
 本项目参考 [genoooool/gpt-pro-collab-skill](https://github.com/genoooool/gpt-pro-collab-skill) 的角色分工、安全边界和本地验收流程，并在此基础上完成以下演进：
 
 - Skill 名称迁移为 `gpt-thinking-pro-collab`；
-- 增加 `model` 配置，同时支持 GPT-5.6 Pro 与 GPT-5.6 Thinking；
+- 增加 `model` 配置，默认使用 GPT-5.6 Pro，并接受 GPT-5.6 Sol Pro 兼容名；
 - 删除跨模型恢复链路，配置不匹配或平台自动回退时直接停止；
 - 增加模型映射、失败路径、元数据和 Markdown 约束的合同测试。
 
@@ -411,7 +413,7 @@ rg -n 'TODO|\[TODO' .
 
 ### 为什么模型自报与配置不一致就直接失败？
 
-`model` 是本次协作的硬性验收条件。Skill 不会把 Pro、Thinking、mini 或其他模型视为可互换，也不会在额度耗尽后静默接受平台自动回退。
+`model` 是本次协作的硬性验收条件。Skill 不会把 Pro 配置族与其他模型视为可互换，也不会在额度耗尽后静默接受平台自动回退。
 
 ### 能否让 Codex 自动切换代理或 VPN？
 

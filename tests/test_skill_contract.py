@@ -53,9 +53,15 @@ def extract_profile_rows(
     markdown: str,
 ) -> dict[str, tuple[tuple[str, ...], ...]]:
     profiles: dict[str, tuple[tuple[str, ...], ...]] = {}
-    for line in markdown.splitlines():
-        if not line.startswith("| `GPT-"):
-            continue
+    lines = markdown.splitlines()
+    header_index = next(
+        index
+        for index, line in enumerate(lines)
+        if line.startswith("| `\u6a21\u578b` / `model` \u914d\u7f6e\u503c |")
+    )
+    for line in lines[header_index + 2 :]:
+        if not line.startswith("|"):
+            break
         fields = tuple(
             tuple(re.findall(r"`([^`]+)`", cell)) for cell in line.strip("|").split("|")
         )
@@ -111,54 +117,45 @@ class SkillContractTest(unittest.TestCase):
             with self.subTest(required_rule=required_rule):
                 self.assertIn(required_rule, SKILL_TEXT)
 
-    def test_supported_profiles_map_to_the_expected_reasoning_modes(self) -> None:
+    def test_only_astra_pro_and_two_aliases_are_supported(self) -> None:
         expected_profiles = {
             "GPT-6 Astra Pro": (
-                ("GPT-6 Astra Pro", "GPT-6 Pro", "6-pro"),
+                ("GPT-6 Astra Pro", "GPT-6 Pro", "6 Pro"),
                 ("GPT-6 Astra Pro",),
                 ("GPT-6 Astra",),
                 ("Pro",),
-                (
-                    "GPT-6 Astra",
-                    "6 Astra",
-                    "gpt-6-astra",
-                    "GPT-6 Astra Pro",
-                    "6 Astra Pro",
-                ),
-            ),
-            "GPT-5.6 Pro": (
-                ("GPT-5.6 Pro", "GPT-5.6 Sol Pro"),
-                ("GPT-5.6 Pro",),
-                ("GPT-5.6 Sol",),
-                ("Pro",),
-                ("GPT-5.6 Pro", "5.6 Pro", "GPT-5.6 Sol Pro", "5.6 Sol Pro"),
-            ),
-            "GPT-5.6 Thinking": (
-                ("GPT-5.6 Thinking", "GPT-5.6 Sol"),
-                ("GPT-5.6 Thinking",),
-                ("GPT-5.6 Sol",),
-                ("Extra High", "\u6781\u9ad8"),
-                ("GPT-5.6 Thinking", "5.6 Thinking", "GPT-5.6 Sol", "5.6 Sol"),
+                ("GPT-6 Astra Pro", "GPT-6 Pro", "6 Pro"),
             ),
         }
 
         self.assertEqual(extract_profile_rows(SKILL_TEXT), expected_profiles)
 
-    def test_profile_aliases_and_identities_are_unambiguous(self) -> None:
-        aliases: set[str] = set()
-        identities: set[str] = set()
-        for profile in extract_profile_rows(SKILL_TEXT).values():
-            with self.subTest(target_model=profile[1]):
-                self.assertFalse(aliases.intersection(profile[0]))
-                self.assertFalse(identities.intersection(profile[4]))
-                aliases.update(profile[0])
-                identities.update(profile[4])
-
-        self.assertTrue({"GPT-6 Astra Pro", "GPT-6 Pro", "6-pro"} <= aliases)
-        self.assertNotIn("gpt-6-pro", aliases)
-        self.assertNotIn("GPT-6 Astra mini", identities)
-        self.assertNotIn("GPT-6", identities)
-        self.assertNotIn("Pro", identities)
+    def test_configuration_and_ui_labels_use_the_same_closed_allowlist(self) -> None:
+        profile = extract_profile_rows(SKILL_TEXT)["GPT-6 Astra Pro"]
+        aliases, labels = profile[0], profile[4]
+        self.assertEqual(aliases, labels)
+        rejected_values = (
+            "6-pro",
+            "gpt-6-pro",
+            "gpt-6 pro",
+            "6  Pro",
+            "GPT-5.6 Pro",
+            "GPT-5.6 Sol Pro",
+            "GPT-5.6 Thinking",
+            "GPT-5.6 Sol",
+            "GPT-6 Astra",
+            "gpt-6-astra",
+            "6 Astra",
+            "6 Astra Pro",
+            "GPT-6 Astra Pro mini",
+            "GPT-6",
+            "Pro",
+            "",
+        )
+        for value in rejected_values:
+            with self.subTest(value=value):
+                self.assertNotIn(value, aliases)
+                self.assertNotIn(value, labels)
 
     def test_readme_model_table_matches_the_skill(self) -> None:
         documented_profiles = extract_profile_rows(README_TEXT)
@@ -183,31 +180,34 @@ class SkillContractTest(unittest.TestCase):
 
         self.assertNotIn("Pro \u2192 \u6781\u9ad8 \u2192 Pro", SKILL_TEXT)
 
-    def test_gate_requires_model_family_and_pro_mode_evidence(self) -> None:
+    def test_gate_uses_current_selected_ui_evidence_without_a_probe(self) -> None:
         gate_section = SKILL_TEXT.split("### \u5f3a\u5236\u6a21\u578b\u95e8\u7981", 1)[
             1
         ].split("\n## ", 1)[0]
         self.assertIn("`modelFamily`", gate_section)
         self.assertIn("`reasoningMode`", gate_section)
-        self.assertIn("`acceptedIdentities`", gate_section)
+        self.assertIn("`acceptedUiLabels`", gate_section)
+        self.assertNotIn("acceptedIdentities", SKILL_TEXT)
         required_guards = (
-            "\u5148\u9009\u62e9\u5e76\u6838\u5b9e `modelFamily`",
+            "`GPT-6 Astra Pro`\u3001`GPT-6 Pro` \u6216 `6 Pro`",
+            "`modelFamily = GPT-6 Astra` \u4e0e `reasoningMode = Pro`",
             (
-                "\u5fc5\u987b\u53e6\u6709\u754c\u9762 `Pro` \u5df2\u9009\u4e2d"
-                "\u7684\u8bc1\u636e"
+                "\u4e0d\u53d1\u9001 `\u4f60\u662f\u4ec0\u4e48\u6a21\u578b\uff1f`"
+                " \u4f5c\u4e3a\u524d\u7f6e\u6b65\u9aa4"
             ),
             (
-                "\u6309\u5b8c\u6574\u8eab\u4efd\u5224\u65ad\uff0c"
+                "\u6309\u5b8c\u6574\u6807\u7b7e\u5224\u65ad\uff0c"
                 "\u4e0d\u505a\u5b50\u4e32\u653e\u884c"
             ),
-            (
-                "\u5728\u53d1\u9001\u8eab\u4efd\u68c0\u67e5\u6d88\u606f\u524d"
-                "\u7acb\u5373\u7ec8\u6b62"
-            ),
-            (
-                "\u81ea\u62a5\u660e\u786e\u79f0\u672a\u4f7f\u7528 Pro "
-                "\u65f6\u5fc5\u987b\u5931\u8d25"
-            ),
+            ("\u4e0d\u9700\u8981\u5c55\u5f00\u83dc\u5355\u518d\u6b21\u786e\u8ba4"),
+            ("\u4e0d\u9700\u8981\u7b49\u5f85\u4efb\u4f55\u6a21\u578b\u56de\u590d"),
+            "\u672a\u9009\u4e2d\u7684\u83dc\u5355\u9009\u9879",
+            "\u65e7\u622a\u56fe\u6216\u53e6\u4e00\u5bf9\u8bdd\u7684\u6807\u7b7e",
+            "\u804a\u5929\u6b63\u6587\u3001\u5f15\u7528\u3001\u9644\u4ef6\u56fe\u7247",
+            "\u5df2\u9009\u72b6\u6001\u76f8\u4e92\u77db\u76fe",
+            "\u5728\u53d1\u9001\u4efb\u4f55\u6d88\u606f\u6216\u9879\u76ee\u4e0a\u4e0b\u6587\u524d\u7acb\u5373\u7ec8\u6b62",
+            "\u7ee7\u7eed\u53d1\u9001\u4e0a\u4e0b\u6587\u6216\u91c7\u7eb3\u65b0\u56de\u590d\u524d",
+            "\u5373\u4f7f\u4ecd\u6b8b\u7559\u76ee\u6807\u6807\u7b7e",
         )
         for required_guard in required_guards:
             with self.subTest(required_guard=required_guard):
@@ -224,24 +224,14 @@ class SkillContractTest(unittest.TestCase):
             with self.subTest(required_rule=required_rule):
                 self.assertIn(required_rule, SKILL_TEXT)
 
-    def test_readme_documents_astra_and_explicit_legacy_profiles(self) -> None:
+    def test_readme_examples_only_request_the_supported_model(self) -> None:
         required_documentation = (
             "## \u6a21\u578b\u914d\u7f6e",
             "\u6a21\u578b: GPT-6 Astra Pro",
-            "\u6a21\u578b: GPT-5.6 Thinking",
+            "\u6a21\u578b: 6 Pro",
             "`GPT-6 Pro`",
-            "`6-pro`",
-            "`gpt-6-astra`",
-            "https://developers.openai.com/api/docs/models/gpt-6-astra",
-            "https://developers.openai.com/api/docs/guides/latest-model",
-            "`GPT-5.6 Sol Pro`",
-            "`GPT-5.6 Sol`",
+            "`6 Pro`",
             "`Pro`",
-            "`Extra High`",
-            (
-                "GPT-5.6 Thinking` \u662f\u672c Skill \u63d0\u4f9b\u7684"
-                "\u517c\u5bb9\u914d\u7f6e\u540d"
-            ),
             "\u4e0d\u4f1a\u5207\u6362\u5230\u53e6\u4e00\u4e2a\u6a21\u578b\u7ee7\u7eed",
         )
 
@@ -250,33 +240,34 @@ class SkillContractTest(unittest.TestCase):
                 self.assertIn(required_text, README_TEXT)
 
         usage_section = extract_level_two_section(README_TEXT, "\u4f7f\u7528")
-        model_lines = [
-            line
-            for line in usage_section.splitlines()
-            if line.startswith("\u6a21\u578b:")
+        aliases = extract_profile_rows(SKILL_TEXT)["GPT-6 Astra Pro"][0]
+        model_values = [
+            line.split(":", 1)[1].strip()
+            for block in extract_fenced_blocks(README_TEXT)
+            for line in block.splitlines()
+            if line.startswith(("\u6a21\u578b:", "model:"))
         ]
-        self.assertEqual(
-            model_lines,
-            [
-                "\u6a21\u578b: GPT-6 Astra Pro",
-                "\u6a21\u578b: GPT-5.6 Thinking",
-                "\u6a21\u578b: GPT-6 Astra Pro",
-            ],
-        )
+        self.assertGreater(len(model_values), 0)
+        for value in model_values:
+            with self.subTest(value=value):
+                self.assertIn(value, aliases)
         self.assertIn("\u6a21\u5f0f: delegate", usage_section)
         self.assertNotIn("\nmodel:", usage_section)
         self.assertNotIn("\nmode:", usage_section)
 
-    def test_ui_metadata_matches_the_configurable_model_workflow(self) -> None:
+    def test_ui_metadata_matches_the_astra_pro_workflow(self) -> None:
         self.assertIn(
-            'display_name: "GPT \u53ef\u914d\u7f6e\u6a21\u578b\u534f\u4f5c"',
+            'display_name: "GPT-6 Astra Pro \u534f\u4f5c"',
             OPENAI_YAML_TEXT,
         )
         self.assertIn("GPT-6 Astra Pro", OPENAI_YAML_TEXT)
         self.assertIn("$gpt-thinking-pro-collab", OPENAI_YAML_TEXT)
         self.assertNotIn(STALE_INVOCATION, OPENAI_YAML_TEXT)
         self.assertIn("\u6a21\u578b: GPT-6 Astra Pro", OPENAI_YAML_TEXT)
-        self.assertNotIn("\u6a21\u578b: GPT-5.6 Pro", OPENAI_YAML_TEXT)
+        self.assertNotIn("GPT-5.6", OPENAI_YAML_TEXT)
+        self.assertNotIn("6-pro", OPENAI_YAML_TEXT)
+        self.assertIn("GPT-6 Pro", OPENAI_YAML_TEXT)
+        self.assertIn("6 Pro", OPENAI_YAML_TEXT)
         self.assertIn("\u6a21\u5f0f: consult", OPENAI_YAML_TEXT)
         self.assertIn("allow_implicit_invocation: false", OPENAI_YAML_TEXT)
 

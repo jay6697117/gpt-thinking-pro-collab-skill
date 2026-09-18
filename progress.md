@@ -1,6 +1,26 @@
 # 执行进度
 
-## 活动任务：2026-09-18 GPT-6 Astra Pro 升级
+## 活动任务：2026-09-18 模型白名单与界面门禁（Phase 13）
+
+- 已进入 Code 阶段，读取当前 Skill、README、元数据、完整合同测试及匹配的任务记录；Git 基线为 `7021684`，开始时工作区干净。
+- 已查看最新截图，确认红框是当前模型选择器的 `6 Pro` 组合标签。
+- 已读取 skill-creator、其 UI 元数据参考及 planning-with-files；记忆索引无相关命中，以当前工作区和用户截图为准。
+- 前一轮被主动中断，没有可恢复的执行句柄或本轮未提交修改；本轮已取得规则不匹配的直接证据并开始修正。
+- 环境没有 PATH 内的 `ruff`，工具发现命令在此停止，串接的基线测试尚未执行；后续单独运行测试并使用可用的 Ruff 入口。
+- 已修改 Skill 配置表为唯一 Astra / Pro 目标，允许名称为 `GPT-6 Astra Pro`、`GPT-6 Pro`、`6 Pro`；移除旧模型与 `6-pro`，先校验所有显式候选再归一化。
+- 已把门禁改为当前已选 UI 证据：组合标签可直接通过；拆分显示则同时确认系列与 Pro；首条消息可以直接发送任务，不询问模型身份。保留失败即停止、不得自动重试与运行中回退保护，并记录标签来源和检查时点。
+- 已同步 README 模型表、迁移说明、示例、中文 Mermaid、FAQ、UI 元数据与合同测试。测试表解析改为读取完整模型表，避免漏检非 GPT 名称。
+- 首次运行旧合同测试确认其仍要求旧映射、`acceptedIdentities` 与原元数据；同步新契约后 16 项全部通过。
+- 首轮 Ruff lint 通过，format check 发现两处冗余换行；执行 `uvx --offline ruff format --no-cache tests/test_skill_contract.py` 自动修复。
+- 独立只读评估 `/root/gate_forward_validation` 完成 30 个合成场景：白名单与非法值、自然语言候选、无回复直接通过、真实选择器与伪证据、拆分系列 / 档位、恢复与新对话、回退与冲突、两种协作模式均已覆盖；没有执行真实浏览器操作。
+- 最终 `python3 -B -m unittest discover -s tests -q`：16 项全部通过。
+- 最终 `uvx --offline ruff check --no-cache tests/test_skill_contract.py`：通过；`ruff format --check`：`1 file already formatted`。
+- 最终 `uv run --offline --no-project --with pyyaml python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .`：`Skill is valid!`。
+- PyYAML 实际解析 UI 元数据，验证字段结构、显式触发策略、默认提示和简介长度：通过，简介 50 字符。
+- `git diff --check`：通过。当前仅 7 个预期文件有本地修改，`HEAD` 保持 `7021684`；未提交、推送或更新全局安装。
+- 当前阶段：Phase 13 已完成，项目内交付无剩余必需工作；真实 ChatGPT 会话未执行，不将合同或场景评估称为账号端到端验证。
+
+## 历史任务：2026-09-18 GPT-6 Astra Pro 升级（Phase 12）
 
 - 已核实官方模型页、模型指南、Pro 模式与迁移说明，区分官方基础模型名、API ID 和项目 Pro 配置别名。
 - 已核查 `main` / `bf2ee5a` 干净工作区、现有 Skill 配置与门禁、README、元数据、13 项合同测试和历史规划。

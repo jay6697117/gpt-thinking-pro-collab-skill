@@ -1,6 +1,6 @@
 # gpt-thinking-pro-collab
 
-> 让 Codex 负责本地工程、代码集成和独立验收，并按配置通过内置浏览器向 GPT-5.6 Pro 或 GPT-5.6 Thinking 求助。
+> 让 Codex 负责本地工程、代码集成和独立验收，默认通过内置浏览器向 GPT-6 Astra Pro 求助，并兼容显式 GPT-5.6 配置。
 
 这是一个面向 Codex Desktop 的显式调用型 Skill。它不会自动触发；只有调用 `$gpt-thinking-pro-collab`，或明确要求 Codex 使用内置浏览器与目标模型协作时才会启用。
 
@@ -16,7 +16,7 @@
 
 - 正在使用 Codex Desktop，并已安装内置浏览器；
 - 已在内置浏览器中登录 ChatGPT；
-- ChatGPT 账号能够使用目标模型对应的 `Pro` 或 `Extra High`（中文界面为“极高”）档位；
+- ChatGPT 账号能够选择目标模型系列及对应档位；默认要求 `GPT-6 Astra` + `Pro`，旧 Thinking 配置要求 `GPT-5.6 Sol` + `Extra High`（中文界面为“极高”）；
 - Codex 可以读取目标仓库并运行必要测试。
 
 遇到账号选择、密码、验证码、通行密钥或两步验证时，Codex 会暂停浏览器步骤，由用户亲自完成认证，不会索取凭据。
@@ -37,13 +37,14 @@ npx skills add jay6697117/gpt-thinking-pro-collab-skill \
 >
 > 任务：修复用户快速切换列表筛选条件时产生的重复请求。
 
-省略 `模型`（兼容 `model`）时默认使用 `GPT-5.6 Pro`；省略 `模式`（兼容 `mode`）时默认使用 `consult`。
+没有通过 `模型`（兼容 `model`）或自然语言指定模型时，默认使用 `GPT-6 Astra Pro`；省略 `模式`（兼容 `mode`）时默认使用 `consult`。
 
 | 目标 | `模型`（兼容 `model`） | `模式`（兼容 `mode`） |
 | --- | --- | --- |
-| Codex 先本地处理，只在必要时求助 | 省略，默认 `GPT-5.6 Pro` | 省略，默认 `consult` |
-| 使用 Pro 配置族 | `GPT-5.6 Pro` 或 `GPT-5.6 Sol Pro` | `consult` |
-| 使用深度思考配置族 | `GPT-5.6 Thinking` 或 `GPT-5.6 Sol` | `consult` |
+| Codex 先本地处理，只在必要时求助 | 省略，默认 `GPT-6 Astra Pro` | 省略，默认 `consult` |
+| 使用新一代 Pro 配置 | `GPT-6 Astra Pro`，兼容 `GPT-6 Pro` / `6-pro` | `consult` |
+| 继续使用旧 Pro 配置 | `GPT-5.6 Pro` 或 `GPT-5.6 Sol Pro` | `consult` |
+| 继续使用旧深度思考配置 | `GPT-5.6 Thinking` 或 `GPT-5.6 Sol` | `consult` |
 | 让目标模型主写，Codex 本地集成验收 | 任一受支持模型 | `delegate` |
 
 ## 适用场景
@@ -102,35 +103,43 @@ Codex 先理解项目并整理可验收的工程任务，再让目标模型提�
 
 ## 模型配置
 
-每次调用可以设置唯一的模型配置。首选中文键 `模型`，同时兼容英文键 `model`；两者均未设置时默认使用 `GPT-5.6 Pro`，因此既有调用不需要修改。
+每次调用可以设置唯一的模型配置。首选中文键 `模型`，同时兼容英文键 `model` 和自然语言；完全未指定时默认使用 `GPT-6 Astra Pro`。升级后，省略模型的调用会改用 Astra Pro；显式指定 GPT-5.6 的调用仍使用原模型。
 
-模型配置与协作模式相互独立：两个受支持的配置族都可以用于 `consult` 或 `delegate`，Skill 不会根据任务类型自行改写用户选择。
+模型配置与协作模式相互独立：下列配置都可以用于 `consult` 或 `delegate`，Skill 不会根据任务类型自行改写用户选择。
 
-| `模型` / `model` 配置值 | ChatGPT 推理档位 | 门禁接受的模型身份 |
-| --- | --- | --- |
-| `GPT-5.6 Pro` 或 `GPT-5.6 Sol Pro` | `Pro` | `GPT-5.6 Pro`、`5.6 Pro`、`GPT-5.6 Sol Pro`、`5.6 Sol Pro` |
-| `GPT-5.6 Thinking` 或 `GPT-5.6 Sol` | `Extra High`，中文界面为“极高” | `GPT-5.6 Thinking`、`5.6 Thinking`、`GPT-5.6 Sol`、`5.6 Sol` |
+| `模型` / `model` 配置值 | ChatGPT 模型系列 | ChatGPT 推理档位 | 门禁接受的模型身份 |
+| --- | --- | --- | --- |
+| `GPT-6 Astra Pro`、`GPT-6 Pro`、`6-pro` | `GPT-6 Astra` | `Pro` | `GPT-6 Astra`、`6 Astra`、`gpt-6-astra`、`GPT-6 Astra Pro`、`6 Astra Pro` |
+| `GPT-5.6 Pro`、`GPT-5.6 Sol Pro` | `GPT-5.6 Sol` | `Pro` | `GPT-5.6 Pro`、`5.6 Pro`、`GPT-5.6 Sol Pro`、`5.6 Sol Pro` |
+| `GPT-5.6 Thinking`、`GPT-5.6 Sol` | `GPT-5.6 Sol` | `Extra High`，中文界面为 `极高` | `GPT-5.6 Thinking`、`5.6 Thinking`、`GPT-5.6 Sol`、`5.6 Sol` |
 
-`GPT-5.6 Thinking` 是本 Skill 提供的兼容配置名，对应 OpenAI 官方当前命名的 [`GPT-5.6 Sol`](https://developers.openai.com/api/docs/models/gpt-5.6-sol) 与 [`Extra High` / “极高”推理强度](https://learn.chatgpt.com/zh-Hans/docs/models)。同理，`GPT-5.6 Pro` 与 `GPT-5.6 Sol Pro` 在本 Skill 中归入同一个 Pro 配置族。
+截至 2026-09-18，OpenAI 官方确认的模型名是 [`GPT-6 Astra`](https://developers.openai.com/api/docs/models/gpt-6-astra)，API 标识是 `gpt-6-astra`；[官方模型指南](https://developers.openai.com/api/docs/guides/latest-model) 确认它支持 Pro 模式。本项目将 `GPT-6 Astra` + `Pro` 组合命名为 `GPT-6 Astra Pro`，并接受 `GPT-6 Pro`、`6-pro` 两个配置别名。这些 Pro 写法不代表已确认存在同名的独立 API 模型 ID。
 
-显式配置模型后，Skill 会把该选择固定到本次任务的所有新对话。同时提供中英文键时，值相同则视为同一配置，值不同则判定冲突。未知值、冲突值、目标档位不可用、模型自报不匹配或运行中发生自动回退时，都会在发送更多项目上下文前失败；不会切换到另一个模型继续。
+本 Skill 使用 ChatGPT 网页，不调用 OpenAI API；模型系列与 Pro 档位能否同时使用，必须以当前账号可见界面为准。API、Codex 与 ChatGPT 的模型访问分别受各自权限约束，详见[官方可用性说明](https://learn.chatgpt.com/docs/enterprise/workspace-model-availability)。
+
+`GPT-5.6 Thinking` 是本 Skill 提供的兼容配置名，保留 [`GPT-5.6 Sol`](https://developers.openai.com/api/docs/models/gpt-5.6-sol) 与 `Extra High` / “极高”档位的旧映射；`GPT-5.6 Pro` 与 `GPT-5.6 Sol Pro` 也保留原 Pro 配置含义。旧模型是否仍可选同样需要现场检查。
+
+显式配置模型后，Skill 会把模型系列与档位固定到本次任务的所有新对话。中英文键和自然语言指定的模型先归一化，再判断冲突：`模型: GPT-6 Pro` 与 `model: 6-pro` 是同一配置，GPT-6 与 GPT-5.6 则是不同配置。未知值、冲突值、目标模型系列或档位不可用、模型自报不匹配或运行中发生自动回退时，都会在发送更多项目上下文前失败；不会切换到另一个模型继续。
 
 ## 强制模型门禁
 
 每个新的 ChatGPT 对话都必须先验证模型。在门禁通过前，Codex 不得发送真实任务、源码、附件或项目背景。
 
-第一条消息必须且只能是 `你是什么模型？`。只有回复明确匹配当前模型配置对应的身份集合时才能继续。
+先核实界面选择的模型系列与推理档位，再发送第一条且只能是 `你是什么模型？` 的消息。只有回复明确匹配当前配置的完整模型身份，且界面仍保持目标系列与档位时才能继续。Astra 自报不必带 Pro 后缀，但必须有界面 `Pro` 选中证据；只看到 `Pro` 无法确认是 Astra，自报 `GPT-6 Astra mini` 等其他变体也不能通过。
 
 ```mermaid
 flowchart TD
-    CONFIG["解析模型配置"] --> PROFILE{"目标模型配置"}
-    PROFILE -->|"专业模型配置"| PRO["选择专业档位"]
-    PROFILE -->|"深度思考模型配置"| THINKING["选择极高档位"]
-    PRO --> CHAT["打开空白对话"]
-    THINKING --> CHAT
-    CHAT --> ASK["只发送模型身份检查"]
-    ASK -->|"模型身份匹配"| PASS["门禁通过：发送任务上下文"]
-    ASK -->|"不匹配或含糊"| FAIL["停止目标模型调用"]
+    CONFIG["解析并归一化模型配置"] --> CHAT["打开空白对话"]
+    CHAT --> FAMILY["选择并核实模型系列"]
+    FAMILY --> PROFILE{"目标推理档位"}
+    PROFILE -->|"专业配置"| PRO["选择专业档位"]
+    PROFILE -->|"旧深度思考配置"| THINKING["选择极高档位"]
+    PRO --> READY{"系列与档位均可确认"}
+    THINKING --> READY
+    READY -->|"是"| ASK["只发送模型身份检查"]
+    READY -->|"否"| FAIL["停止目标模型调用"]
+    ASK -->|"完整身份与界面匹配"| PASS["门禁通过：发送任务上下文"]
+    ASK -->|"不匹配或含糊"| FAIL
     PASS --> WATCH["监控模式与回退状态"]
     WATCH -->|"模型变化或发生回退"| FAIL
 ```
@@ -138,11 +147,11 @@ flowchart TD
 如果门禁未通过，Skill 会：
 
 - 立即终止本次目标模型调用；
-- 不切换模型重试；
+- 不切换、恢复模型选择或新建对话自动重试；
 - 不发送任务、源码或附件；
 - 不让其他模型或自动回退模型继续委托；
 - 汇报 `目标模型调用失败：未通过 <targetModel> 模型门禁。`；
-- 说明原始配置、目标档位和最后识别到的模型；
+- 说明原始配置、目标模型系列、档位和最后识别到的模型；
 - 根据失败原因提示检查账号套餐、额度、模型可用性或合规网络环境。
 
 Skill 不会代替用户配置代理或 VPN，也不会尝试绕过地区、账号或平台访问限制。
@@ -202,7 +211,7 @@ gh repo clone jay6697117/gpt-thinking-pro-collab-skill ~/.codex/skills/gpt-think
 
 ## 使用
 
-`模型` 和 `模式` 都是单次调用的首选中文配置键；既有的 `model` 和 `mode` 写法继续兼容，也可以直接用自然语言表达。同一项配置同时使用中英文键时，相同值会被合并，不同值会在浏览器调用前按冲突配置终止。
+`模型` 和 `模式` 都是单次调用的首选中文配置键；既有的 `model` 和 `mode` 写法继续兼容，也可以直接用自然语言表达。模型别名归一化后相同则合并，模式值相同也会合并；同一配置项存在不同值时，会在浏览器调用前按冲突配置终止。
 
 ### 默认按需咨询
 
@@ -214,16 +223,16 @@ $gpt-thinking-pro-collab
 
 验收标准可以省略，Codex 会结合仓库规则、现有测试和变更风险自动补全。
 
-### 使用 GPT-5.6 Pro
+### 使用 GPT-6 Astra Pro
 
 ```text
 $gpt-thinking-pro-collab
 
-模型: GPT-5.6 Pro
+模型: GPT-6 Astra Pro
 需求：分析仓库架构，并提出易于维护的修复方案。
 ```
 
-### 使用 GPT-5.6 Thinking
+### 显式保留 GPT-5.6 Thinking
 
 ```text
 $gpt-thinking-pro-collab
@@ -237,7 +246,7 @@ $gpt-thinking-pro-collab
 ```text
 $gpt-thinking-pro-collab
 
-模型: GPT-5.6 Pro
+模型: GPT-6 Astra Pro
 模式: delegate
 需求：重构支付回调模块，将签名校验、幂等处理和业务编排拆分为清晰边界。
 验收：
@@ -253,7 +262,7 @@ $gpt-thinking-pro-collab
 ```text
 $gpt-thinking-pro-collab
 
-使用 GPT-5.6 Pro 和 delegate 模式，让目标模型主写代码，再由 Codex 在本地集成并独立验证。
+使用 GPT-6 Astra Pro 和 delegate 模式，让目标模型主写代码，再由 Codex 在本地集成并独立验证。
 需求：为后台管理系统增加审计日志查询页面。
 ```
 
@@ -263,7 +272,7 @@ $gpt-thinking-pro-collab
 2. 检查 Git 根目录、分支、HEAD 和工作区状态。
 3. 保护用户已有修改，明确任务范围和验收标准。
 4. 解析 `模型`（兼容 `model`）配置，再根据协作模式决定直接工作、按需咨询或委托目标模型主写。
-5. 新建 ChatGPT 对话，选择配置对应的推理档位并执行模型门禁。
+5. 新建 ChatGPT 对话，选择配置对应的模型系列与推理档位，并执行模型门禁。
 6. 只向目标模型提供完成任务所需的最小上下文。
 7. 回收并审查目标模型的方案、补丁或代码。
 8. 在本地集成并运行真实验证。
@@ -324,7 +333,7 @@ $gpt-thinking-pro-collab
 正常完成时，Codex 会报告：
 
 - 使用的协作模式；
-- 原始模型配置（含实际键名和值）、解析后的目标模型和推理档位；
+- 原始模型配置（含实际键名和值）、解析后的目标模型、模型系列和推理档位；
 - 模型门禁过程及最终确认结果；
 - 目标模型对话链接；
 - 传递的源码基线和归档 SHA-256（如果实际传包）；
@@ -410,7 +419,8 @@ rg -n 'TODO|\[TODO' .
 本项目参考 [genoooool/gpt-pro-collab-skill](https://github.com/genoooool/gpt-pro-collab-skill) 的角色分工、安全边界和本地验收流程，并在此基础上完成以下演进：
 
 - Skill 名称迁移为 `gpt-thinking-pro-collab`；
-- 增加 `模型` / `model` 配置，默认使用 GPT-5.6 Pro，并支持 Pro 与 Thinking 两个配置族；
+- 增加 `模型` / `model` 配置，默认升级为 GPT-6 Astra Pro，兼容 `GPT-6 Pro` / `6-pro` 别名，并保留显式 GPT-5.6 Pro 与 Thinking 配置；
+- 分别验证模型系列与推理档位，避免不同代际的 Pro 配置混用；
 - 增加 `模式` / `mode` 配置，支持 `consult` 与 `delegate`，并优先展示中文键；
 - 删除跨模型恢复链路，配置不匹配或平台自动回退时直接停止；
 - 增加模型映射、失败路径、元数据和 Markdown 约束的合同测试。
@@ -427,7 +437,7 @@ rg -n 'TODO|\[TODO' .
 
 ### 为什么模型自报与配置不一致就直接失败？
 
-模型配置是本次协作的硬性验收条件。Skill 不会把 Pro 与 Thinking 两个配置族视为可互换，也不会在额度耗尽后静默接受平台自动回退。
+模型系列与推理档位共同构成本次协作的验收条件。Skill 不会把 Astra Pro、旧 Sol Pro 与 Thinking 视为可互换，也不会在额度耗尽后静默接受平台自动回退。
 
 ### 能否让 Codex 自动切换代理或 VPN？
 

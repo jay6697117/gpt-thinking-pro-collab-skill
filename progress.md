@@ -1,5 +1,31 @@
 # 执行进度
 
+## 活动任务：2026-09-18 GPT-6 Astra Pro 升级
+
+- 已核实官方模型页、模型指南、Pro 模式与迁移说明，区分官方基础模型名、API ID 和项目 Pro 配置别名。
+- 已核查 `main` / `bf2ee5a` 干净工作区、现有 Skill 配置与门禁、README、元数据、13 项合同测试和历史规划。
+- 已使用 OpenAI Docs、planning-with-files 与 skill-creator；进入 Code 阶段，准备更新默认模型及模型系列 / 推理档位双重检查。
+- 首次规划补丁误用 `progress.md` 标题而未通过校验；确认未产生部分修改后，按实际标题修正。
+- 已更新 `SKILL.md`：默认 `GPT-6 Astra Pro`，支持 `GPT-6 Pro` / `6-pro`；先归一化再判断冲突；显式 GPT-5.6 配置保留旧含义；新增 `modelFamily` 与 Pro 档位共同验证，完整身份匹配并拒绝冲突、含糊自报及运行中回退。
+- 已同步 `README.md` 的默认值、官方依据、配置表、示例、Mermaid、流程与 FAQ，以及 `agents/openai.yaml` 的简介和默认提示。
+- 已更新合同测试：覆盖三组模型映射、别名及身份唯一性、README / Skill 表一致性、Astra Pro 默认值和双重门禁。
+- 第一次提交测试补丁时，JavaScript 模板中的未转义反引号导致工具脚本语法错误，未执行文件修改；改用正确转义的补丁字符串完成编辑。
+- `python3 -B -m unittest discover -s tests -v`：16 项全部通过；这些是声明式合同检查，不代表真实浏览器 E2E。
+- `uv run --no-project --with pyyaml python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .`：`Skill is valid!`。
+- 额外解析 YAML 核对元数据结构、简介长度、默认提示和显式触发策略：通过。
+- 首轮 Ruff lint 通过，format 检查发现一处表达式换行；执行 `uvx ruff format --no-cache tests/test_skill_contract.py` 修复后，lint、format check、16 项合同测试和 `git diff --check` 全部通过。
+- 按 skill-creator 的独立前向验证要求，启动仅阅读 `SKILL.md` 的评估任务，覆盖 16 个合成配置 / 界面场景；不访问真实账号、不发送消息。
+- 独立评估完成 16 个合成场景：默认 Astra Pro、两个简写、自然语言、别名合并、模型 / 模式冲突、空值 / 非法值、旧配置、基础名自报、缺失系列证据、mini、非 Pro 自报、运行回退和含糊回复均得到明确处理。
+- 评估发现“自报未使用 Pro”与“运行中回退”的失败后重试规则没有统一表述；已在 Skill 明确所有门禁失败均终止，不自动恢复选择或新建对话重试，README 与测试同步。
+- 独立评估定向复核上述两类失败，确认歧义已消除。
+- 最终实现状态下重新执行 16 项合同测试、Ruff lint、Ruff format check、官方 Skill 校验及 `git diff --check`，全部通过。
+- 完成逐项审计：正式名称 / API ID / 项目别名区分、默认升级、显式旧配置、双重门禁、元数据与文档一致性、中文用法及权限边界均已核对。
+- 最终 Git 状态仅含 Skill、README、UI 元数据、合同测试和三份规划记录，`HEAD = bf2ee5a`；未提交、推送或更新全局安装。
+- 验证限制：没有执行真实 ChatGPT 会话、账户访问验证或 API 请求；没有把合成场景推演称为真实 E2E。
+- 当前阶段：Phase 12 已完成，当前项目升级范围内无剩余必需工作。
+
+## 历史记录（Phase 1–11）
+
 ## 2026-08-03
 
 ### 已执行

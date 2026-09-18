@@ -1,5 +1,36 @@
 # 调研发现
 
+## 活动任务：2026-09-18 GPT-6 Astra Pro 升级
+
+- 当前根目录是 `/Users/zhangjinhui/Desktop/gpt-thinking-pro-collab-skill`；`main` / `bf2ee5a`，开始时工作区干净。以下旧记录保留为历史证据。
+- 当前模型链路位于 `SKILL.md` 的解析表与浏览器门禁；元数据默认提示和 README 仍指向 GPT-5.6 Pro。没有 API 客户端、依赖清单或待迁移的请求参数。
+- 官方 [GPT-6 Astra 模型页](https://developers.openai.com/api/docs/models/gpt-6-astra) 明确模型名与 API ID `gpt-6-astra`。
+- 官方 [模型指南](https://developers.openai.com/api/docs/guides/latest-model) 明确 GPT-6 Astra 支持 Pro 模式；[推理模式说明](https://developers.openai.com/api/docs/guides/reasoning#reasoning-mode) 将 Pro 表述为 `reasoning.mode`，与推理 effort 分开。
+- 官方 [迁移章节](https://developers.openai.com/api/docs/guides/latest-model/gpt-6-astra.md#migration-quickstart) 要求保留已有推理用途；本项目没有 API 请求，API endpoint、采样参数和缓存参数修改均不适用。
+- 对 `GPT-6 Astra Pro` 的官方文档精确搜索没有结果。因此本项目将其明确定义为 `GPT-6 Astra` + `Pro` 的配置名，`GPT-6 Pro` / `6-pro` 是项目别名，不宣称为独立官方 API ID。
+- 官方 [模型可用性边界](https://learn.chatgpt.com/docs/enterprise/workspace-model-availability) 强调 ChatGPT、Codex 和 API 访问权限分别确定；API 文档不能证明当前 ChatGPT 账号已有相应界面入口。
+- 原门禁只切换推理档位；新增同为 Pro 的 Astra 后必须同时固定模型系列，否则可能仍调用 Sol Pro。Astra 自报基础模型名时应结合已验证的 Pro 界面状态判断，不强迫模型自报带 Pro 后缀。
+- 保留 GPT-5.6 Pro / Sol Pro 和 Thinking / Sol 两组显式配置；升级缺省路径和推荐示例，不把旧显式值静默改为 GPT-6。
+- 本轮不使用用户账号发送消息；本地合同与只读行为验证不等同于真实 ChatGPT 会话验证。
+
+### 完成审计
+
+| 要求 | 当前证据 | 结论 |
+| --- | --- | --- |
+| 官方确认新模型 | 已读取 GPT-6 Astra 模型页、官方模型指南、Pro 推理模式与可用性边界页面 | 官方基础模型与 Pro 能力已确认；项目别名没有被宣称为独立 API ID |
+| 升级当前项目默认模型 | `SKILL.md` 解析规则、README 默认与推荐示例、`agents/openai.yaml` 默认提示均为 GPT-6 Astra Pro | 已完成 |
+| 三个用户写法可用 | 三个配置值归一化为 Astra / Pro；中英文键与自然语言一起判断冲突 | 合同与独立推演通过 |
+| 保留明确旧配置 | GPT-5.6 Pro / Sol Pro、Thinking / Sol 继续保持原系列及档位 | 合同与独立推演通过 |
+| 不误用其他模型 | 系列、档位、完整身份共同检查；拒绝 mini、含糊自报、未使用 Pro、Sol 回退以及冲突配置 | 合同与独立推演通过 |
+| 失败后不自动重试 | 独立推演发现档位自报冲突、运行中回退的重试语义不够明确；已统一终止规则并复核两例 | 已修复并复验 |
+| 必要验证 | 16 项合同测试；16 个只读合成场景及两例复核；Skill 校验；YAML 解析与元数据约束；Ruff lint / format；Git 差异检查 | 均通过，未声称真实账号 E2E |
+| 工作区范围 | 仅 7 个预期文件有本地差异，HEAD 仍为 bf2ee5a | 无提交、推送、全局安装或真实模型请求 |
+
+- 独立评估任务 `/root/model_contract_forward_test` 只读取 Skill，不读取预期断言或规划；16 个场景的解析和发送边界均符合本轮要求。
+- 评估指出的自然语言自动触发资格及浏览器 Skill 是否安装，属于既有调用 / 环境边界；本轮保留显式触发策略，未扩大安装或浏览器适配范围。
+
+## 历史记录（Phase 1–11）
+
 ## 当前状态
 
 - 工作目录：`/Users/zhangjinhui/Desktop/gpt-thinking-collab-skill`

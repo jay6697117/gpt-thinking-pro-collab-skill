@@ -1,6 +1,6 @@
 ---
 name: gpt-thinking-pro-collab
-description: "让 Codex 与已登录的 ChatGPT 目标模型协作完成本地工程任务，并通过“模型”（兼容 model）配置选择 GPT-5.6 Pro 或 GPT-5.6 Thinking。仅当用户显式调用 $gpt-thinking-pro-collab，或明确要求 Codex 通过内置浏览器向 GPT 模型求助、让目标模型主写代码再由 Codex 本地集成时使用。支持 consult（遇到关键问题再咨询，默认）和 delegate（目标模型主写、Codex 集成验收）两种模式；Codex 始终负责仓库检查、权限控制、代码落地和独立验证。"
+description: "让 Codex 与已登录的 ChatGPT 目标模型协作完成本地工程任务，通过“模型”（兼容 model）配置默认选择 GPT-6 Astra Pro，并兼容显式 GPT-5.6 Pro 或 GPT-5.6 Thinking。仅当用户显式调用 $gpt-thinking-pro-collab，或明确要求 Codex 通过内置浏览器向 GPT 模型求助、让目标模型主写代码再由 Codex 本地集成时使用。支持 consult（遇到关键问题再咨询，默认）和 delegate（目标模型主写、Codex 集成验收）两种模式；Codex 始终负责仓库检查、权限控制、代码落地和独立验证。"
 ---
 
 # GPT 模型协作
@@ -20,19 +20,22 @@ description: "让 Codex 与已登录的 ChatGPT 目标模型协作完成本地�
 
 在任何浏览器动作或上下文准备前解析唯一的模型配置。`模型` 是首选中文配置键，`model` 是向后兼容别名：
 
-1. 读取当前调用中的 `模型: <value>` 或 `model: <value>`。同一次调用同时提供两个键时，值相同则按一个配置处理；值不同时视为冲突配置。
-2. 用户以自然语言明确指定目标模型时，按同一配置处理。
-3. `模型` 与 `model` 均未提供时使用 `GPT-5.6 Pro`，保持既有调用兼容。
-4. 去除值两侧空白后，按下表解析；不要根据任务类型、账号套餐、当前 UI 状态或旧对话自行改写配置。
+1. 读取当前调用中的所有 `模型: <value>` 或 `model: <value>`，保留原始键名和值。
+2. 用户以自然语言明确指定目标模型时，纳入同一候选集合；不要只读取第一个模型值。
+3. 用户未通过配置键或自然语言指定模型时，使用 `GPT-6 Astra Pro`。显式 GPT-5.6 配置继续选择原模型，不自动升级或降级。
+4. 去除每个值两侧空白后，按下表归一化；不要根据任务类型、账号套餐、当前 UI 状态或旧对话自行改写配置。
 
-| `模型` / `model` 配置值 | `targetModel` | `reasoningMode` | `acceptedIdentities` |
-| --- | --- | --- | --- |
-| `GPT-5.6 Pro`、`GPT-5.6 Sol Pro` | `GPT-5.6 Pro` | `Pro` | `GPT-5.6 Pro`、`5.6 Pro`、`GPT-5.6 Sol Pro`、`5.6 Sol Pro` |
-| `GPT-5.6 Thinking`、`GPT-5.6 Sol` | `GPT-5.6 Thinking` | `Extra High`，中文界面为 `极高` | `GPT-5.6 Thinking`、`5.6 Thinking`、`GPT-5.6 Sol`、`5.6 Sol` |
+| `模型` / `model` 配置值 | `targetModel` | `modelFamily` | `reasoningMode` | `acceptedIdentities` |
+| --- | --- | --- | --- | --- |
+| `GPT-6 Astra Pro`、`GPT-6 Pro`、`6-pro` | `GPT-6 Astra Pro` | `GPT-6 Astra` | `Pro` | `GPT-6 Astra`、`6 Astra`、`gpt-6-astra`、`GPT-6 Astra Pro`、`6 Astra Pro` |
+| `GPT-5.6 Pro`、`GPT-5.6 Sol Pro` | `GPT-5.6 Pro` | `GPT-5.6 Sol` | `Pro` | `GPT-5.6 Pro`、`5.6 Pro`、`GPT-5.6 Sol Pro`、`5.6 Sol Pro` |
+| `GPT-5.6 Thinking`、`GPT-5.6 Sol` | `GPT-5.6 Thinking` | `GPT-5.6 Sol` | `Extra High`，中文界面为 `极高` | `GPT-5.6 Thinking`、`5.6 Thinking`、`GPT-5.6 Sol`、`5.6 Sol` |
 
-5. 如果同一次调用出现冲突的模型值，先请用户只保留一个值；不要自行选择。
+5. 归一化后 `targetModel` 相同则按一个配置处理，不同则视为冲突配置。比如 `模型: GPT-6 Pro` 与 `model: 6-pro` 是同一配置；GPT-6 与 GPT-5.6 不合并。如果同一次调用出现冲突的模型值，在任何浏览器动作前请用户只保留一个值；不要自行选择。
 6. 如果已经写出任一模型键但值缺失、为空或不在支持列表中，在打开 ChatGPT 前终止目标模型调用，报告键名、收到的值和支持值。不要回退到默认模型。
-7. 配置解析完成后固定 `targetModel`、`reasoningMode` 和 `acceptedIdentities`；同一次任务的所有新对话都复用它们，除非用户明确发出新的模型配置。
+7. 配置解析完成后固定 `targetModel`、`modelFamily`、`reasoningMode` 和 `acceptedIdentities`；同一次任务的所有新对话都复用它们，除非用户明确发出新的模型配置。
+
+命名依据（2026-09-18 核实）：OpenAI 的官方模型名是 [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra)，API ID 是 `gpt-6-astra`，[模型指南](https://developers.openai.com/api/docs/guides/latest-model) 确认支持 Pro 模式。本 Skill 的 `GPT-6 Astra Pro` 表示该模型配合 `Pro`，`GPT-6 Pro` 与 `6-pro` 仅为项目配置别名，不是经官方确认的独立 API ID。本项目走 ChatGPT 浏览器，账号是否提供该组合必须现场核实；不要从 API 支持推断 ChatGPT 账号可用。
 
 ## 先接管本地任务
 
@@ -86,14 +89,14 @@ description: "让 Codex 与已登录的 ChatGPT 目标模型协作完成本地�
 
 每次新建目标模型对话时，在发送任务、源码、附件或背景之前执行以下流程。`consult` 和 `delegate` 模式均不得跳过：
 
-1. 打开一个完全空白的新对话。把推理模式选择器切换为已解析的 `reasoningMode`；必须根据配置选择，不要复用旧对话或当前界面的既有模式。
+1. 打开一个完全空白的新对话。先选择并核实 `modelFamily`，再把推理模式选择器切换为已解析的 `reasoningMode`；如果界面使用一个组合选项，同时核实模型系列与档位。记录可见选中标签；不能只看到 `Pro` 就认定是 GPT-6 Astra，也不要复用旧对话或当前界面的既有模式。
 2. 该对话的第一条消息必须且只能是：`你是什么模型？`
-3. 等待并读取完整回复。只有回复明确、肯定地自称为 `acceptedIdentities` 中的一个名称，且没有同时声称其他冲突模型时，才通过门禁。界面标签本身不能代替回复验证。
+3. 等待并读取完整回复。只有回复明确、肯定地自称为 `acceptedIdentities` 中的一个名称，且没有同时声称其他冲突模型或档位，并且界面仍符合 `modelFamily` 与 `reasoningMode` 时，才通过门禁。按完整身份判断，不做子串放行；例如 `GPT-6 Astra mini` 不匹配 `GPT-6 Astra`。Astra 仅自报 `GPT-6 Astra` 或 `gpt-6-astra` 可以满足模型身份检查，但必须另有界面 `Pro` 已选中的证据；自报明确称未使用 Pro 时必须失败。界面标签本身不能代替回复验证，基础模型自报也不能证明 Pro 档位。
 4. 如果回复含糊、拒绝说明、属于其他模型或仅在否定/假设语境中提到目标名称，立即终止本次目标模型调用。不要切换到其他推理模式，不要新建对话重试，不要发送任务、源码或附件。
-5. 如果界面中找不到配置对应的 `reasoningMode`，同样立即终止。不要使用最接近的档位，不要回退到默认模型。
-6. 终止时明确汇报：`目标模型调用失败：未通过 <targetModel> 模型门禁。` 同时说明配置值、期望的 `reasoningMode` 和最后识别到的模型；如属账号、地区或限额可用性问题，只建议用户确认合规网络、账号套餐和额度后在新任务中重试。
-7. 记录通过门禁的对话链接、原始模型配置（含实际键名和值）、解析后的 `targetModel`、`reasoningMode` 和模型回复。后续另开新对话时，必须用同一配置重新执行门禁。
-8. 对话进行中如页面显示模型已切换、额度耗尽、自动回退或当前模式不再匹配 `reasoningMode`，立即停止继续发送上下文或采纳新回复，并按模型门禁失败汇报；不得让平台回退模型继续委托。
+5. 如果界面中找不到或无法确认配置对应的 `modelFamily` 或 `reasoningMode`，在发送身份检查消息前立即终止。不要使用最接近的档位，不要回退到默认模型。
+6. 任何门禁失败（包括档位自报冲突和运行中回退）都终止本次目标模型调用，不自动恢复选择或新建对话重试。终止时明确汇报：`目标模型调用失败：未通过 <targetModel> 模型门禁。` 同时说明配置值、期望的 `modelFamily` / `reasoningMode` 和最后识别到的模型；如属账号、地区或限额可用性问题，只建议用户确认合规网络、账号套餐和额度后在新任务中重试。
+7. 记录通过门禁的对话链接、原始模型配置（含实际键名和值）、解析后的 `targetModel`、`modelFamily`、`reasoningMode`、界面选中标签和模型回复。后续另开新对话时，必须用同一配置重新执行门禁。
+8. 对话进行中如页面显示模型已切换、额度耗尽、自动回退，或当前模型系列 / 档位不再匹配 `modelFamily` / `reasoningMode`，立即停止继续发送上下文或采纳新回复，并按模型门禁失败汇报；不得让平台回退模型继续委托。
 
 ## 向目标模型提供上下文
 
@@ -165,7 +168,7 @@ description: "让 Codex 与已登录的 ChatGPT 目标模型协作完成本地�
 向用户简洁报告：
 
 - 使用的协作模式；
-- 原始模型配置（含实际键名和值）、解析后的 `targetModel` 与 `reasoningMode`；
+- 原始模型配置（含实际键名和值）、解析后的 `targetModel`、`modelFamily` 与 `reasoningMode`；
 - 模型门禁是否通过、最终确认的模型和对话链接；
 - 如果门禁失败，明确写明 `目标模型调用失败`，说明配置模型、最后识别到的模型和失败原因；
 - 目标模型对话链接，或 consult 模式下未触发咨询的原因；

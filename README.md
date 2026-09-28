@@ -180,7 +180,7 @@ Skill 已收录到 skills.sh，可以在以下页面查看：
 <https://skills.sh/jay6697117/gpt-thinking-pro-collab-skill/gpt-thinking-pro-collab>
 
 > [!WARNING]
-> 截至 2026-09-28，skills.sh 的目录页仍展示旧版 GPT-5.6 内容。上面的安装命令直接从公开 GitHub 仓库获取当前 GPT-6 Astra Pro 版；目录页内容需等待平台重新索引。可参考[上游同类问题](https://github.com/vercel-labs/skills/issues/780)。
+> 截至 2026-09-28，skills.sh 的目录页仍展示旧版 GPT-5.6 内容。上面的安装命令直接从公开 GitHub 仓库获取当前 GPT-6 Astra Pro 版；目录页内容需等待平台重新索引。可跟踪[本仓库的重索引请求](https://github.com/vercel-labs/skills/issues/2321)。
 
 ### 使用 GitHub 命令行工具
 

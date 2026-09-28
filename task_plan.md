@@ -4,7 +4,7 @@
 
 用户已明确要求发布当前版本，授权完成必要的 Git 提交 / 推送、官方 CLI 发布路径和公开内容验证。发布对象为 `jay6697117/gpt-thinking-pro-collab-skill` 中的 `gpt-thinking-pro-collab`；保留模型白名单、显式调用和禁止自动降级，不修改用户全局 Skill，不发送真实 ChatGPT 消息。
 
-**Status:** in_progress
+**Status:** blocked
 
 - [x] 核对当前源码、公开仓库及授权；当前提交 `b7834df` 已推送，12 文件指纹与本地验收一致。
 - [x] 核对当前提交的远端 CI，结果通过。
@@ -15,7 +15,11 @@
 
 仅 GitHub 推送、安装成功或页面可访问不能证明当前版本已在 skills.sh 完整发布。
 
-当前剩余依赖：skills.sh 服务端仍返回旧的 8 文件快照。安装遥测已明确传入 `skills/gpt-thinking-pro-collab/SKILL.md` 并返回 200；无缓存的新请求同样返回旧文件集合。本轮保持目标进行中，详见[发布记录](docs/validation/2026-09-28-publication.md)。
+当前剩余依赖：skills.sh 服务端仍返回旧的 8 文件快照。安装遥测已明确传入 `skills/gpt-thinking-pro-collab/SKILL.md` 并返回 200；无缓存的新请求同样返回旧文件集合。连续三轮目标核查均出现同一外部阻塞，当前标为受阻，尚未完成发布，详见[发布记录](docs/validation/2026-09-28-publication.md)。
+
+2026-09-28 08:38 UTC 的第二轮目标续查仍发现同一外部阻塞，GitHub 内容继续匹配，#2321 无回复。已准备[补充说明草稿](docs/validation/2026-09-28-reindex-followup-draft.md)，等待用户明确授权后才向第三方维护者追加留言；草稿尚未发送或推送。
+
+第三轮核查（08:41 UTC）：当前 `main / 0b644bb` 的 12 文件内容继续匹配，目录仍缺 10 个资源、夹带 6 个维护文件，2 个共同文件内容不同；#2321 仍无回复。没有仍在运行的发布进程。解除依赖需要上游快照刷新；补充留言仍等待明确授权，不把自动续作消息当作发送许可。
 
 ---
 

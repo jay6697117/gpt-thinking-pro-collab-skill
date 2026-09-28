@@ -479,5 +479,52 @@
     "state": "OPEN",
     "comments": 0
   },
-  "remainingRequirement": "The canonical skills.sh file set, bytes and page must match the current 12-file skill."
+  "remainingRequirement": "The canonical skills.sh file set, bytes and page must match the current 12-file skill.",
+  "goalStatus": "blocked",
+  "latestContinuationAudit": {
+    "observedAtUtc": "2026-09-28T08:42:36.767011+00:00",
+    "consecutiveGoalTurnsWithSameBlocker": 3,
+    "sourceCommit": "0b644bbd848732c31afbc76467a4c64c16c68109",
+    "sourceSha256": "9651e487820e2c39fe2aab680ba23e76bd54b9308d36e34520a8f564e774b241",
+    "checks": {
+      "github": {
+        "matches": true,
+        "missing": [],
+        "extra": [],
+        "changed": []
+      },
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ],
+        "pageHasCurrentModel": true
+      }
+    },
+    "upstreamIssueState": "OPEN",
+    "upstreamIssueComments": 0,
+    "followupDraftAuthorizedToSend": false,
+    "remainingDependency": "skills.sh must refresh the canonical stored snapshot and page"
+  }
 }

@@ -139,7 +139,7 @@ npx skills@1.7.0 update gpt-thinking-pro-collab -g -y
 
 ### skills.sh 目录状态
 
-[技能页](https://skills.sh/jay6697117/gpt-thinking-pro-collab-skill/gpt-thinking-pro-collab)已存在。2026-09-28 的后续核查已在公开页面和下载快照中观察到 GPT-6 Astra Pro，下载包仍采用原来的 8 文件结构；本轮未发布的 12 文件版本须在发布后重新核对。历史背景见[重索引事项 #2321](https://github.com/vercel-labs/skills/issues/2321)。
+[技能页](https://skills.sh/jay6697117/gpt-thinking-pro-collab-skill/gpt-thinking-pro-collab)已存在。GitHub 上的 12 文件版本已发布，官方 CLI 隔离安装与远端 CI 均通过；截至 2026-09-28，skills.sh 下载接口仍返回原来的 8 文件快照，目录同步尚未完成。安装当前版本请使用上面的 GitHub 安装命令；证据见[发布记录](docs/validation/2026-09-28-publication.md)，上游跟踪为[重索引事项 #2321](https://github.com/vercel-labs/skills/issues/2321)。
 
 目录出现、安装成功或遥测被接收都不证明内容已更新。发布验证比较实际文件及哈希，不只检查 HTTP 状态。
 

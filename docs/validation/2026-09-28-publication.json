@@ -1,0 +1,483 @@
+{
+  "recordedAtUtc": "2026-09-28T08:32:53.456386+00:00",
+  "status": "awaiting_catalog_refresh",
+  "publicationComplete": false,
+  "sourceCommit": "b7834df7f19d2cd2a0ccff2c13bf4df2386b23e2",
+  "source": {
+    "schemaVersion": 1,
+    "skillName": "gpt-thinking-pro-collab",
+    "sourceSha256": "9651e487820e2c39fe2aab680ba23e76bd54b9308d36e34520a8f564e774b241",
+    "files": {
+      "SKILL.md": "d7a3ecc5936ead4c957d60a6e88646e5558712962775d6d083057b91b2d35aa3",
+      "agents/openai.yaml": "368e57e7b164e2292305629c1100dabd35923c42bb5be9f4b51fa20d89721088",
+      "assets/delivery-manifest.example.json": "e6372a72fbb048e87383d03d4498cb0511bc235c0a4a7881721a07534159ac20",
+      "assets/session.example.json": "51d4eff71cacafb587c59f6a845b29646caf06b588ee6328a1bac877e3e6214d",
+      "references/browser-workflow.md": "8738ae5afc00af61c36e2473ac349b09bfe57ddf3792349d06e23c17cc5fef70",
+      "references/configuration.md": "dc532bda3fdfbe59e83462f31d3ef376f63716e23ec29fad6267f33c4644c9b9",
+      "references/context.md": "75674444546dc1b595a568bda920c58f2fbbfdd4c59bff49c47e939f673a84d9",
+      "references/reporting.md": "b867027938ee12eaad5f908de7d899889bea23426f73988b0e184927eb7cb938",
+      "references/review-delivery.md": "7b138c8eb915cd36e259966eedcbc9554de1efc9e9c7c86f022583738930f7fd",
+      "scripts/artifact_utils.py": "b6438e692736ef09088c8e7ba16786fd19723a042310c3d6c0fd7775a0067c4a",
+      "scripts/context_bundle.py": "251c5c77c04ab48b45d268e067ffbabf8b4572fb7b70a6bb70c27aec27b0cd45",
+      "scripts/verify_delivery.py": "1d5869cc8329a47fb37ba212b40eaa2149cb15af80328ae455027be2218325d8"
+    }
+  },
+  "github": {
+    "matches": true,
+    "missing": [],
+    "extra": [],
+    "changed": []
+  },
+  "ci": {
+    "conclusion": "success",
+    "headSha": "b7834df7f19d2cd2a0ccff2c13bf4df2386b23e2",
+    "jobs": [
+      {
+        "name": "local (3.13)",
+        "conclusion": "success",
+        "status": "completed"
+      },
+      {
+        "name": "local (3.10)",
+        "conclusion": "success",
+        "status": "completed"
+      },
+      {
+        "name": "catalog",
+        "conclusion": "skipped",
+        "status": "completed"
+      }
+    ],
+    "url": "https://github.com/jay6697117/gpt-thinking-pro-collab-skill/actions/runs/36396585943"
+  },
+  "installation": {
+    "observedAtUtc": "2026-09-28T08:21:37.921612+00:00",
+    "cliVersion": "1.7.0",
+    "installedFileCount": 12,
+    "installed": {
+      "matches": true,
+      "missing": [],
+      "extra": [],
+      "changed": []
+    },
+    "globalInstallationTouched": false,
+    "telemetry": [
+      {
+        "observedAt": "2026-09-28T08:21:37.069Z",
+        "endpoint": "https://add-skill.vercel.sh/audit",
+        "event": null,
+        "skillFiles": null,
+        "status": 200
+      },
+      {
+        "observedAt": "2026-09-28T08:21:37.639Z",
+        "endpoint": "https://add-skill.vercel.sh/t",
+        "event": "install",
+        "skillFiles": "{\"gpt-thinking-pro-collab\":\"skills/gpt-thinking-pro-collab/SKILL.md\"}",
+        "status": 200
+      }
+    ]
+  },
+  "catalogObservations": [
+    {
+      "observedAtUtc": "2026-09-28T08:25:15.076467+00:00",
+      "attempt": 1,
+      "downloadHeaders": {
+        "date": "Mon, 28 Sep 2026 08:19:45 GMT",
+        "etag": null,
+        "x-vercel-cache": "STALE",
+        "age": "330",
+        "cache-control": "public"
+      },
+      "fileCount": 8,
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ]
+      },
+      "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "pageContainsCurrentContract": false,
+      "pageContainsCurrentModel": false,
+      "complete": false
+    },
+    {
+      "observedAtUtc": "2026-09-28T08:26:01.195674+00:00",
+      "attempt": 2,
+      "downloadHeaders": {
+        "date": "Mon, 28 Sep 2026 08:25:15 GMT",
+        "etag": null,
+        "x-vercel-cache": "HIT",
+        "age": "45",
+        "cache-control": "public"
+      },
+      "fileCount": 8,
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ]
+      },
+      "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "pageContainsCurrentContract": false,
+      "pageContainsCurrentModel": false,
+      "complete": false
+    },
+    {
+      "observedAtUtc": "2026-09-28T08:26:47.286946+00:00",
+      "attempt": 3,
+      "downloadHeaders": {
+        "date": "Mon, 28 Sep 2026 08:25:15 GMT",
+        "etag": null,
+        "x-vercel-cache": "HIT",
+        "age": "91",
+        "cache-control": "public"
+      },
+      "fileCount": 8,
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ]
+      },
+      "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "pageContainsCurrentContract": false,
+      "pageContainsCurrentModel": false,
+      "complete": false
+    },
+    {
+      "observedAtUtc": "2026-09-28T08:27:33.882833+00:00",
+      "attempt": 4,
+      "downloadHeaders": {
+        "date": "Mon, 28 Sep 2026 08:25:15 GMT",
+        "etag": null,
+        "x-vercel-cache": "HIT",
+        "age": "138",
+        "cache-control": "public"
+      },
+      "fileCount": 8,
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ]
+      },
+      "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "pageContainsCurrentContract": false,
+      "pageContainsCurrentModel": false,
+      "complete": false
+    },
+    {
+      "observedAtUtc": "2026-09-28T08:28:20.261981+00:00",
+      "attempt": 5,
+      "downloadHeaders": {
+        "date": "Mon, 28 Sep 2026 08:25:15 GMT",
+        "etag": null,
+        "x-vercel-cache": "HIT",
+        "age": "184",
+        "cache-control": "public"
+      },
+      "fileCount": 8,
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ]
+      },
+      "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "pageContainsCurrentContract": false,
+      "pageContainsCurrentModel": false,
+      "complete": false
+    },
+    {
+      "observedAtUtc": "2026-09-28T08:29:06.343485+00:00",
+      "attempt": 6,
+      "downloadHeaders": {
+        "date": "Mon, 28 Sep 2026 08:25:15 GMT",
+        "etag": null,
+        "x-vercel-cache": "HIT",
+        "age": "231",
+        "cache-control": "public"
+      },
+      "fileCount": 8,
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ]
+      },
+      "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "pageContainsCurrentContract": false,
+      "pageContainsCurrentModel": false,
+      "complete": false
+    },
+    {
+      "observedAtUtc": "2026-09-28T08:29:52.420027+00:00",
+      "attempt": 7,
+      "downloadHeaders": {
+        "date": "Mon, 28 Sep 2026 08:25:15 GMT",
+        "etag": null,
+        "x-vercel-cache": "HIT",
+        "age": "277",
+        "cache-control": "public"
+      },
+      "fileCount": 8,
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ]
+      },
+      "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "pageContainsCurrentContract": false,
+      "pageContainsCurrentModel": false,
+      "complete": false
+    },
+    {
+      "observedAtUtc": "2026-09-28T08:30:38.562896+00:00",
+      "attempt": 8,
+      "downloadHeaders": {
+        "date": "Mon, 28 Sep 2026 08:25:15 GMT",
+        "etag": null,
+        "x-vercel-cache": "STALE",
+        "age": "323",
+        "cache-control": "public"
+      },
+      "fileCount": 8,
+      "catalog": {
+        "matches": false,
+        "missing": [
+          "assets/delivery-manifest.example.json",
+          "assets/session.example.json",
+          "references/browser-workflow.md",
+          "references/configuration.md",
+          "references/context.md",
+          "references/reporting.md",
+          "references/review-delivery.md",
+          "scripts/artifact_utils.py",
+          "scripts/context_bundle.py",
+          "scripts/verify_delivery.py"
+        ],
+        "extra": [
+          ".gitignore",
+          "README.md",
+          "findings.md",
+          "progress.md",
+          "task_plan.md",
+          "tests/test_skill_contract.py"
+        ],
+        "changed": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ]
+      },
+      "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "pageContainsCurrentContract": false,
+      "pageContainsCurrentModel": false,
+      "complete": false
+    }
+  ],
+  "freshCatalogRequest": {
+    "observedAtUtc": "2026-09-28T08:30:11.371492+00:00",
+    "requestUrl": "https://www.skills.sh/api/download/jay6697117/gpt-thinking-pro-collab-skill/gpt-thinking-pro-collab?publication=b7834df",
+    "headers": {
+      "date": "Mon, 28 Sep 2026 08:30:11 GMT",
+      "x-vercel-cache": "MISS",
+      "age": "0",
+      "cache-control": "public"
+    },
+    "fileCount": 8,
+    "catalog": {
+      "matches": false,
+      "missing": [
+        "assets/delivery-manifest.example.json",
+        "assets/session.example.json",
+        "references/browser-workflow.md",
+        "references/configuration.md",
+        "references/context.md",
+        "references/reporting.md",
+        "references/review-delivery.md",
+        "scripts/artifact_utils.py",
+        "scripts/context_bundle.py",
+        "scripts/verify_delivery.py"
+      ],
+      "extra": [
+        ".gitignore",
+        "README.md",
+        "findings.md",
+        "progress.md",
+        "task_plan.md",
+        "tests/test_skill_contract.py"
+      ],
+      "changed": [
+        "SKILL.md",
+        "agents/openai.yaml"
+      ]
+    },
+    "actualSourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf"
+  },
+  "visiblePageEvidence": {
+    "oldHeading": "GPT 模型协作",
+    "oldFirstSection": "解析调用",
+    "newHeadingObserved": false,
+    "newFirstSectionObserved": false,
+    "method": "HTTP HTML text with script and style content excluded"
+  },
+  "browserValidation": {
+    "performed": false,
+    "reason": "In-app browser unavailable; Chrome tool could not start the host app-server"
+  },
+  "upstreamIssue": {
+    "url": "https://github.com/vercel-labs/skills/issues/2321",
+    "state": "OPEN",
+    "comments": 0
+  },
+  "remainingRequirement": "The canonical skills.sh file set, bytes and page must match the current 12-file skill."
+}

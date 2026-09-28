@@ -31,7 +31,7 @@ npx skills add jay6697117/gpt-thinking-pro-collab-skill \
   -y
 ```
 
-如果仓库仍为私有仓库，当前 GitHub 身份必须拥有读取权限。安装后新建一个 Codex 任务，并直接用中文描述目标：
+仓库已公开，可直接安装。安装后新建一个 Codex 任务，并直接用中文描述目标：
 
 > `$gpt-thinking-pro-collab`
 >
@@ -175,7 +175,7 @@ npx skills add jay6697117/gpt-thinking-pro-collab-skill \
 
 安装后可在新任务中通过 `$gpt-thinking-pro-collab` 显式触发。
 
-Skill 被 skills.sh 收录后，可以在以下页面查看：
+Skill 已收录到 skills.sh，可以在以下页面查看：
 
 <https://skills.sh/jay6697117/gpt-thinking-pro-collab-skill/gpt-thinking-pro-collab>
 

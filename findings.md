@@ -1,6 +1,16 @@
 # 调研发现
 
-## 活动任务：2026-09-28 skills.sh 发布（Phase 14）
+## 活动任务：2026-09-28 skills.sh 快照刷新（Phase 15）
+
+- 公开仓库 `main` 为 `c5a85ee`，其中 `SKILL.md` SHA-256 为 `d78cf1c4d98ba7f7a62ba0e5b945121e3971544492ae9e0106eccc1ae0b5b51c`；新隔离安装取得相同文件。
+- skills.sh 技能页 HTML 的描述与正文仍包含 `GPT-5.6 Thinking`、`acceptedIdentities` 和固定的“你是什么模型？”前置询问，完全没有 `GPT-6 Astra Pro`；目录下载接口的旧快照 hash 为 `9ec98fc250d2b138c087ed1cb5c44e4fe68b7a5afe2b9873d065b0cb149d595f`。缓存绕过参数及下载接口 MISS 仍返回旧版，故不只是浏览器本地缓存。
+- 上次只验证 HTTP 200、页面标题和 GitHub 安装，未比较页面正文与当前源码；“已发布当前版本”的结论不成立。
+- 本地 Skills CLI v1.7.0 在成功安装后，仅当 GitHub API 判定仓库为公开时发送遥测。受控安装中 GitHub API 返回 200 且 `private=false`，审计与安装遥测端点均返回 HTTP 200；遥测调用不保证后台快照已更新。
+- skills.sh 官方文档称安装会在后台检查仓库，页面仍需等待处理与缓存刷新；上游已有同类目录快照滞后问题。
+- 旧目录下载包中的 `SKILL.md`、`README.md`、`agents/openai.yaml` 与历史提交 `bf2ee5a691266fec4e9388c9c37d949a20542222` 逐字节一致；该提交日期为 2026-09-01。目录记录并非最近一次 README 修改后的版本。
+- 安装遥测返回 200 后约五分钟，下载接口仍在缓存 MISS 情况下返回旧 hash；上游问题 `vercel-labs/skills#780` 仍为 OPEN，描述相同的“GitHub 新安装正确、目录旧快照”现象。公开文档未给仓库所有者提供手动重索引入口；维护者内部重索引端点要求生产密钥。
+
+## 历史任务：2026-09-28 skills.sh 发布（Phase 14）
 
 - skills.sh 官方 FAQ 说明：Skill 放在 GitHub 仓库中，经 `npx skills add <owner/repo>` 安装后，由匿名安装遥测自动进入目录；没有单独的提交表单。
 - GitHub `jay6697117/gpt-thinking-pro-collab-skill` 当前为公开仓库；本地 `HEAD` 与远端 `main` 同为 `d62e54559c7cfc03a630a426731ea70b4f1fa4d9`。

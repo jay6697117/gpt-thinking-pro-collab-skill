@@ -1,6 +1,15 @@
 # 调研发现
 
-## 活动任务：2026-09-18 模型白名单与界面门禁（Phase 13）
+## 活动任务：2026-09-28 skills.sh 发布（Phase 14）
+
+- skills.sh 官方 FAQ 说明：Skill 放在 GitHub 仓库中，经 `npx skills add <owner/repo>` 安装后，由匿名安装遥测自动进入目录；没有单独的提交表单。
+- GitHub `jay6697117/gpt-thinking-pro-collab-skill` 当前为公开仓库；本地 `HEAD` 与远端 `main` 同为 `d62e54559c7cfc03a630a426731ea70b4f1fa4d9`。
+- 技能页 `https://skills.sh/jay6697117/gpt-thinking-pro-collab-skill/gpt-thinking-pro-collab` 返回 HTTP 200，页面正文显示安装命令、`SKILL.md`、安装数 1 与首次收录时间，已不再是历史记录中的软 404。
+- `npx skills add jay6697117/gpt-thinking-pro-collab-skill --list` 发现唯一技能；隔离项目安装成功，安装的 `SKILL.md` 与当前本地文件 SHA-256 相同。
+- skills.sh 的 Snyk 审计为 MEDIUM / W011，理由是浏览器读取第三方内容存在间接提示词注入风险；Skill 已明确把页面及模型回复视为不可信输入。该提示不是收录失败。
+- 发布文档提交 `0adeed23746507a643cf7651b9d2fdb3404f6ef2` 已推送到 `origin/main`；GitHub Raw README 展示“仓库已公开”和“Skill 已收录到 skills.sh”。带缓存绕过参数复核技能页为 HTTP 200，正文包含安装入口、`SKILL.md` 与 Skill 标题，且无 404 标题。
+
+## 历史任务：2026-09-18 模型白名单与界面门禁（Phase 13）
 
 - 当前 `main` / `7021684` 工作区干净，上一版升级已经进入基线；项目是声明式 Skill，没有 API 客户端或浏览器执行脚本。
 - 最新参考图 `/Users/zhangjinhui/.codex/attachments/7ce18e77-28a8-4839-82b6-17ccec55b61b/image-1.png` 已查看：红框位于 ChatGPT 输入框右侧的模型选择器，完整可见标签为 `6 Pro`。

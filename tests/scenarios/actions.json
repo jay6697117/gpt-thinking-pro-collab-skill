@@ -1,0 +1,21 @@
+{
+  "local_readonly": "继续本地只读分析或报告，不修改源码、不发送外部任务",
+  "local_implementation": "在已授权范围内继续本地实现与验证",
+  "reject_configuration": "报告非法、空值或冲突配置，停止外部调用",
+  "inspect_gate": "查看或初次选定本次模型并核对当前 UI，尚不发送任务",
+  "send_task": "当前门禁及发送条件已满足，可发送本轮任务一次",
+  "terminate_model_call": "模型门禁失败，终止本次外部调用，不自动重试",
+  "report_missing_browser": "报告内置浏览器能力或指南缺失，停止外部步骤",
+  "request_authentication": "请用户完成认证，保留原任务等待就绪",
+  "inspect_submission": "恢复原对话核对本轮发送结果，禁止直接重发",
+  "wait": "保持正常推理，等待并按预算观察最小状态",
+  "recover_conversation": "恢复原对话连接并重验门禁、核对本轮消息",
+  "read_current_reply": "读取本轮对应的完整回复一次，进入接入检查",
+  "request_complete_delivery": "在原对话补齐上下文或交付，不采纳半成品",
+  "review_candidate": "执行聚焦代码审查与本地验收，不能仅凭哈希应用",
+  "reject_delivery": "拒绝基线、路径、哈希或范围不合格的候选交付",
+  "report_local_success": "报告本地已完成结果，省略未用的门禁和归档字段",
+  "preserve_received": "保留已经接收或应用的结果，不重复读取或应用",
+  "request_new_authorization": "针对新增生产副作用取得授权，继续独立本地工作",
+  "stop_on_user_request": "按用户明确要求停止相关工作并保留恢复信息"
+}

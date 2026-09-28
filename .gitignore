@@ -14,3 +14,4 @@ __pycache__/
 *.pfx
 .ruff_cache
 .ruff_cache/
+.venv/

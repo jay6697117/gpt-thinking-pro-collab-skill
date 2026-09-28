@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "skillName": "gpt-thinking-pro-collab",
+  "files": [
+    "SKILL.md",
+    "agents/openai.yaml",
+    "assets/delivery-manifest.example.json",
+    "assets/session.example.json",
+    "references/browser-workflow.md",
+    "references/configuration.md",
+    "references/context.md",
+    "references/reporting.md",
+    "references/review-delivery.md",
+    "scripts/artifact_utils.py",
+    "scripts/context_bundle.py",
+    "scripts/verify_delivery.py"
+  ]
+}

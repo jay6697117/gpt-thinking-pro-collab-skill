@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "taskId": "example-task",
+  "turnId": "1",
+  "conversationUrl": null,
+  "taskType": "audit",
+  "mode": "consult",
+  "model": {
+    "targetModel": "GPT-6 Astra Pro",
+    "modelFamily": "GPT-6 Astra",
+    "reasoningMode": "Pro",
+    "acceptedUiLabels": [
+      "GPT-6 Astra Pro",
+      "GPT-6 Pro",
+      "6 Pro"
+    ],
+    "rawConfiguration": []
+  },
+  "state": "unstarted",
+  "gateEvidence": null,
+  "requestSha256": null,
+  "previousAssistantRef": null,
+  "submissionEvidence": null,
+  "responseRef": null,
+  "lastObservedAt": null,
+  "applied": false
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "format": "diff",
+  "baseCommit": null,
+  "contextSha256": null,
+  "artifactSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "changes": [
+    {
+      "path": "src/example.py",
+      "action": "modify",
+      "baseSha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "review": {
+    "kind": "author",
+    "scope": ["src/example.py"],
+    "notes": ["Author self-review; independent review is not claimed."]
+  },
+  "assumptions": [],
+  "validationCommands": ["python3 -m unittest discover -s tests"],
+  "risks": []
+}

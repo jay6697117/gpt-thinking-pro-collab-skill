@@ -1,0 +1,6 @@
+interface:
+  display_name: "GPT-6 Astra Pro 协作"
+  short_description: "通过内置浏览器按需咨询或委托主写，保留任务边界并由 Codex 验收"
+  default_prompt: "使用 $gpt-thinking-pro-collab，以 模型: GPT-6 Astra Pro 和 模式: consult 处理当前任务，遵守审阅或实现范围并验证交付。"
+policy:
+  allow_implicit_invocation: false

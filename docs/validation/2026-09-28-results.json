@@ -1,0 +1,199 @@
+{
+  "recordedAtUtc": "2026-09-28T08:04:59.839217+00:00",
+  "baselineCommit": "6762629f8c6a7a106fd22d893a5c3e69b4f1b3ca",
+  "source": {
+    "schemaVersion": 1,
+    "skillName": "gpt-thinking-pro-collab",
+    "sourceSha256": "9651e487820e2c39fe2aab680ba23e76bd54b9308d36e34520a8f564e774b241",
+    "files": {
+      "SKILL.md": "d7a3ecc5936ead4c957d60a6e88646e5558712962775d6d083057b91b2d35aa3",
+      "agents/openai.yaml": "368e57e7b164e2292305629c1100dabd35923c42bb5be9f4b51fa20d89721088",
+      "assets/delivery-manifest.example.json": "e6372a72fbb048e87383d03d4498cb0511bc235c0a4a7881721a07534159ac20",
+      "assets/session.example.json": "51d4eff71cacafb587c59f6a845b29646caf06b588ee6328a1bac877e3e6214d",
+      "references/browser-workflow.md": "8738ae5afc00af61c36e2473ac349b09bfe57ddf3792349d06e23c17cc5fef70",
+      "references/configuration.md": "dc532bda3fdfbe59e83462f31d3ef376f63716e23ec29fad6267f33c4644c9b9",
+      "references/context.md": "75674444546dc1b595a568bda920c58f2fbbfdd4c59bff49c47e939f673a84d9",
+      "references/reporting.md": "b867027938ee12eaad5f908de7d899889bea23426f73988b0e184927eb7cb938",
+      "references/review-delivery.md": "7b138c8eb915cd36e259966eedcbc9554de1efc9e9c7c86f022583738930f7fd",
+      "scripts/artifact_utils.py": "b6438e692736ef09088c8e7ba16786fd19723a042310c3d6c0fd7775a0067c4a",
+      "scripts/context_bundle.py": "251c5c77c04ab48b45d268e067ffbabf8b4572fb7b70a6bb70c27aec27b0cd45",
+      "scripts/verify_delivery.py": "1d5869cc8329a47fb37ba212b40eaa2149cb15af80328ae455027be2218325d8"
+    }
+  },
+  "localSuites": [
+    {
+      "python": "3.14.0",
+      "tests": 49,
+      "result": "passed"
+    },
+    {
+      "python": "3.10.21",
+      "tests": 49,
+      "result": "passed"
+    },
+    {
+      "python": "3.13.3",
+      "tests": 49,
+      "result": "passed"
+    }
+  ],
+  "checks": {
+    "lint": "passed",
+    "format": "passed",
+    "structureAndLinks": "passed",
+    "officialSkillValidator": "passed",
+    "diffCheck": "passed"
+  },
+  "independentScenarios": {
+    "cases": 32,
+    "failures": [],
+    "inputSha256": {
+      "skills/gpt-thinking-pro-collab/SKILL.md": "d7a3ecc5936ead4c957d60a6e88646e5558712962775d6d083057b91b2d35aa3",
+      "skills/gpt-thinking-pro-collab/references/browser-workflow.md": "8738ae5afc00af61c36e2473ac349b09bfe57ddf3792349d06e23c17cc5fef70",
+      "skills/gpt-thinking-pro-collab/references/configuration.md": "dc532bda3fdfbe59e83462f31d3ef376f63716e23ec29fad6267f33c4644c9b9",
+      "skills/gpt-thinking-pro-collab/references/context.md": "75674444546dc1b595a568bda920c58f2fbbfdd4c59bff49c47e939f673a84d9",
+      "skills/gpt-thinking-pro-collab/references/reporting.md": "b867027938ee12eaad5f908de7d899889bea23426f73988b0e184927eb7cb938",
+      "skills/gpt-thinking-pro-collab/references/review-delivery.md": "7b138c8eb915cd36e259966eedcbc9554de1efc9e9c7c86f022583738930f7fd",
+      "tests/scenarios/actions.json": "4eafba1c9fa79462200bb2cd5febf3cebd2e38094b06d6544668c11705d25818",
+      "tests/scenarios/cases.json": "a9984dfc95acc3fc7f859262bb4998e699bc510c67f03439966046922d010f32"
+    },
+    "resultsFile": "2026-09-28-scenarios.json",
+    "resultsSha256": "c5e927ceeaeadce65adab315736a1c754222567b6f2ddffdde2859294e00fd3f",
+    "oracleSha256": "5667375ad4df8f3d447c9abc4d6fbf9cc3dd51f52c4e2ce6335d3a0ef2f5c1da",
+    "oracleAdjustments": [
+      "C01: readonly audit preserves delegation",
+      "C30: unrelated production suggestion does not expand the local task"
+    ],
+    "targetedIndependentRecheck": [
+      "C01",
+      "C21",
+      "C30"
+    ],
+    "liveAccountActions": false
+  },
+  "installation": {
+    "files": 12,
+    "sourceSha256": "9651e487820e2c39fe2aab680ba23e76bd54b9308d36e34520a8f564e774b241",
+    "packageSha256": "44442606f37665b3585667537e53c43ed0483f4ffc245249933552e45e1d1c13",
+    "output": "/var/folders/9v/1v9jpbbn4q39j5whrg51y9y00000gn/T/gpt-collab-final-install-d5gl6kth/skill.zip",
+    "installation": "passed",
+    "cliVersion": "1.7.0",
+    "installedFileCount": 12,
+    "allFileContentsMatch": true,
+    "installedHelpers": "help commands passed",
+    "deterministicPackage": "passed",
+    "globalInstallationTouched": false,
+    "workDirectory": "/var/folders/9v/1v9jpbbn4q39j5whrg51y9y00000gn/T/gpt-collab-final-install-d5gl6kth",
+    "installedDirectory": "/var/folders/9v/1v9jpbbn4q39j5whrg51y9y00000gn/T/gpt-collab-final-install-d5gl6kth/.agents/skills/gpt-thinking-pro-collab"
+  },
+  "packageContentsMatchSource": true,
+  "historyArchive": {
+    "task_plan.md": {
+      "matchesOriginal": true,
+      "sha256": "cfee9023824f13dadedd8ff496efafa5ba693b93e7c28a3b5d4ad5028dffa595"
+    },
+    "findings.md": {
+      "matchesOriginal": true,
+      "sha256": "0f8bec8846918a46c04fb82bb0617fb5fcd70e942e7142ec462c0ec20169e66d"
+    },
+    "progress.md": {
+      "matchesOriginal": true,
+      "sha256": "a4190d6411b6e5b4401dad3e54cdac79ffc166616f5746e85679d6751943f4b5"
+    }
+  },
+  "externalChecks": {
+    "github": {
+      "matches": false,
+      "missing": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "assets/delivery-manifest.example.json",
+        "assets/session.example.json",
+        "references/browser-workflow.md",
+        "references/configuration.md",
+        "references/context.md",
+        "references/reporting.md",
+        "references/review-delivery.md",
+        "scripts/artifact_utils.py",
+        "scripts/context_bundle.py",
+        "scripts/verify_delivery.py"
+      ],
+      "extra": [],
+      "changed": []
+    },
+    "catalog": {
+      "matches": false,
+      "missing": [
+        "assets/delivery-manifest.example.json",
+        "assets/session.example.json",
+        "references/browser-workflow.md",
+        "references/configuration.md",
+        "references/context.md",
+        "references/reporting.md",
+        "references/review-delivery.md",
+        "scripts/artifact_utils.py",
+        "scripts/context_bundle.py",
+        "scripts/verify_delivery.py"
+      ],
+      "extra": [
+        ".gitignore",
+        "README.md",
+        "findings.md",
+        "progress.md",
+        "task_plan.md",
+        "tests/test_skill_contract.py"
+      ],
+      "changed": [
+        "SKILL.md",
+        "agents/openai.yaml"
+      ],
+      "pageHasCurrentModel": true
+    }
+  },
+  "catalogBaselineObservation": {
+    "observedAtUtc": "2026-09-28T08:02:31.202939+00:00",
+    "catalogFileCount": 8,
+    "catalogHasCurrentModel": true,
+    "catalogSource": {
+      "schemaVersion": 1,
+      "skillName": "gpt-thinking-pro-collab",
+      "sourceSha256": "fc0e256d3ef7c8e46abb8ab368a13d50ca1ecf4664d1595f1f5c5813b66b41cf",
+      "files": {
+        ".gitignore": "2a3cb505624637591b4a3c34fdb42df72e7cd332f9044f6c5a2cce68127c14e2",
+        "README.md": "a5188a3122a6f60bbd2c52d1980ce1fb5745c7f5fd999fb37001b5008e82bd21",
+        "SKILL.md": "d78cf1c4d98ba7f7a62ba0e5b945121e3971544492ae9e0106eccc1ae0b5b51c",
+        "agents/openai.yaml": "73163651e4bf2e51a611138099e94bd195905b3cc718bbfbee5dbcf75cbfa02a",
+        "findings.md": "f81b98f61c11b13d7309eb49f2abd5de8a5361a5ac6cd911949e17a95811ee10",
+        "progress.md": "909eaf3d1e65637554e82b5dd939cf76257e0e0d70741f6d82651f9486e9271a",
+        "task_plan.md": "af2c66bc1ca088cb3ad75f16af6267498e28df96ec5399d7aa30af2ac98006f3",
+        "tests/test_skill_contract.py": "654c06e782ed47e77dd7516666041dd5e7dcb6e4b7915114869f0069127385cb"
+      }
+    },
+    "publishedBaselineCommit": "6762629f8c6a7a106fd22d893a5c3e69b4f1b3ca",
+    "comparisonToPublishedBaseline": {
+      "matches": false,
+      "missing": [],
+      "extra": [],
+      "changed": [
+        "README.md",
+        "findings.md",
+        "progress.md",
+        "task_plan.md"
+      ]
+    },
+    "upstreamIssue": {
+      "html_url": "https://github.com/vercel-labs/skills/issues/2321",
+      "state": "open",
+      "updated_at": "2026-09-28T06:52:21Z",
+      "closed_at": null
+    }
+  },
+  "notPerformed": [
+    "commit",
+    "push",
+    "publication",
+    "global skill installation",
+    "remote GitHub Actions run",
+    "live ChatGPT E2E"
+  ]
+}
